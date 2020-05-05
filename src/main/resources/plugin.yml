@@ -1,0 +1,5 @@
+name: Minestrike
+version: ${project.version}
+main: devvy.me.minestrike.Minestrike
+api-version: 1.13
+authors: [DevvyDoo, Courteouss]
