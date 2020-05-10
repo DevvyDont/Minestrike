@@ -5,13 +5,41 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
-public class AdminCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class AdminCommand implements CommandExecutor, TabCompleter {
 
     private GameManager gameManager;
 
     public AdminCommand(GameManager gameManager) {
         this.gameManager = gameManager;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        String[] subs = {"start", "end", "next", "status"};
+        if (command.getName().equalsIgnoreCase("admin")){
+            if (args.length == 1){
+                ArrayList<String> options = new ArrayList<>();
+
+                if (!args[0].equalsIgnoreCase("")){
+                    for (String sub : subs) {
+                        if (sub.startsWith(args[0]))
+                            options.add(sub);
+                    }
+                    Collections.sort(options);
+                    return options;
+
+                } else
+                    return Arrays.asList(subs);
+            }
+        }
+        return null;
     }
 
     @Override
