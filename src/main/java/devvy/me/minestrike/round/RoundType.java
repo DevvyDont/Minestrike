@@ -2,15 +2,17 @@ package devvy.me.minestrike.round;
 
 public enum RoundType {
 
-    BUY(BuyRound.class, ActionRound.class),
-    ACTION(ActionRound.class, IntermissionRound.class),
-    INTERMISSION(IntermissionRound.class, BuyRound.class);
+    BUY(BuyRound.class, ActionRound.class, 20 * 15),
+    ACTION(ActionRound.class, IntermissionRound.class, 20 * 120),
+    INTERMISSION(IntermissionRound.class, BuyRound.class, 20 * 7);
 
-    public Class<? extends Round> CLAZZ;
-    public Class<? extends Round> NEXT;
+    public Class<? extends RoundBase> CLAZZ;
+    public Class<? extends RoundBase> NEXT;
+    public int DEFAULT_TICK_LENGTH;
 
-    RoundType(Class<? extends Round> CLAZZ ,Class<? extends Round> NEXT) {
+    RoundType(Class<? extends RoundBase> CLAZZ, Class<? extends RoundBase> NEXT, int length) {
         this.CLAZZ = CLAZZ;
         this.NEXT = NEXT;
+        this.DEFAULT_TICK_LENGTH = length;
     }
 }
