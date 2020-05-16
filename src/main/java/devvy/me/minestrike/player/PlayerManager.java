@@ -17,9 +17,6 @@ public class PlayerManager implements Listener {
     public PlayerManager(Minestrike plugin){
         this.plugin = plugin;
         playerKDAttributesMap = new HashMap<>();
-        for (Player player : plugin.getServer().getOnlinePlayers()){
-            playerKDAttributesMap.put(player, new CSPlayer(player));
-        }
     }
 
     public CSPlayer getCSPlayer(Player player){
