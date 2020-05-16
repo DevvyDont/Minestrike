@@ -6,8 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class csPlayer {
-    private int playerKills;
-    private int playerDeaths;
+
     private Player player;
     private KillDeath kdTracker;
 
@@ -16,8 +15,10 @@ public class csPlayer {
     public csPlayer(Player player) {
         kdTracker = new KillDeath();
         this.player = player;
-        playerKills = 0;
-        playerDeaths = 0;
+    }
+
+    public void resetStats(){
+        kdTracker.reset();
     }
 
     public KillDeath getKdTracker(){

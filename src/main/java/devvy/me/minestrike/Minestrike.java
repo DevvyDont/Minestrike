@@ -14,9 +14,6 @@ public final class Minestrike extends JavaPlugin {
     @Override
     public void onEnable() {
 
-       this.getServer().getPluginManager().registerEvents(new TeamManager(), this);
-       this.getServer().getPluginManager().registerEvents(new PlayerManager(this), this);
-
        //this.getServer().getPluginManager().registerEvents(new Scoreboard(), this);
 
 

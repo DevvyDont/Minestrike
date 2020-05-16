@@ -12,11 +12,13 @@ public class TeamManager implements Listener {
 
     private Team counterTerror;
     private Team terrorists;
+    private Team spectators;
 
     public TeamManager() {
 
-        counterTerror = new Team("Defenders");
-        terrorists = new Team("Attackers");
+        counterTerror = new Team(TeamType.DEFENDERS, "Defenders");
+        terrorists = new Team(TeamType.ATTACKERS, "Attackers");
+        spectators = new Team(TeamType.SPECTATORS, "Spectators");
 
     }
 
@@ -28,26 +30,15 @@ public class TeamManager implements Listener {
         return terrorists;
     }
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event){
-        Player player = event.getPlayer();
-        if (terrorists.size() < counterTerror.size()){
-            terrorists.addMember(player);
-            System.out.println("t" + terrorists);
-        }else if (counterTerror.size() < terrorists.size()){
-            counterTerror.addMember(player);
-            System.out.println("ct" + counterTerror);
-        }else{
-            terrorists.addMember(player);
-            System.out.println("t" + terrorists);
-        }
-    }
+    public Team getPlayerTeam(Player player){
+        if (counterTerror.hasMember(player))
+            return counterTerror;
+        else if (terrorists.hasMember(player))
+            return terrorists;
 
-    @EventHandler
-    public void onPlayerLeave(PlayerQuitEvent event){
-        Player player = event.getPlayer();
-        if (terrorists.hasMember(player)){
-            terrorists.removeMember(player);
-        }else counterTerror.removeMember(player);
+        if (!spectators.hasMember(player))
+            spectators.addMember(player);
+        return spectators;
+
     }
 }

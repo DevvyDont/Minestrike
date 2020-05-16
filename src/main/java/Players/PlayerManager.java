@@ -9,9 +9,10 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import java.util.HashMap;
 
 public class PlayerManager implements Listener {
+
+
     private Minestrike plugin;
     private HashMap<Player, csPlayer> playerKDAttributesMap;
-
 
     public PlayerManager(Minestrike plugin){
         this.plugin = plugin;
@@ -21,11 +22,26 @@ public class PlayerManager implements Listener {
         }
     }
 
+    public csPlayer getCSPlayer(Player player){
+        csPlayer ret = playerKDAttributesMap.get(player);
+        if (ret != null)
+            return ret;
+
+        playerKDAttributesMap.put(player, new csPlayer(player));
+        return getCSPlayer(player);
+    }
+
+    public void resetPlayers(){
+        for (csPlayer p : playerKDAttributesMap.values())
+            p.resetStats();
+    }
+
+
     @EventHandler
     public void playerKill(PlayerDeathEvent event){
         if(event.getEntity().getKiller() != null){
-            csPlayer victim = playerKDAttributesMap.get(event.getEntity());
-            csPlayer killer = playerKDAttributesMap.get(event.getEntity().getKiller());
+            csPlayer victim = getCSPlayer(event.getEntity());
+            csPlayer killer = getCSPlayer(event.getEntity().getKiller());
             victim.getKdTracker().increaseDeathCount();
             killer.getKdTracker().increaseKillCount();
             System.out.println("Killer K/D: " + killer.getKdTracker().getKDRation());

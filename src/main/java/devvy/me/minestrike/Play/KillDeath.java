@@ -1,12 +1,6 @@
 package devvy.me.minestrike.Play;
 
-import devvy.me.minestrike.Minestrike;
-import org.apache.commons.lang.ObjectUtils;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
-
 
 
 public class KillDeath implements Listener {
@@ -18,6 +12,10 @@ public class KillDeath implements Listener {
        playerKills = 0;
     }
 
+    public void reset(){
+        playerDeaths = 0;
+        playerKills = 0;
+    }
 
     public double getKDRation(){
         int tempDeath = playerDeaths;

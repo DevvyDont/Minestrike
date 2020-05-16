@@ -8,15 +8,22 @@ import java.util.Collection;
 public class Team {
 
     private ArrayList<Player> members;
+    private TeamType type;
     private String name;
     private int roundsWon;
 
-    public Team(String name) {
+    public Team(TeamType type, String name) {
 
         members = new ArrayList<>();
+
+        this.type = type;
         this.name = name;
         roundsWon = 0;
 
+    }
+
+    public TeamType getType() {
+        return type;
     }
 
     public String getName() {
