@@ -3,3 +3,8 @@ version: ${project.version}
 main: devvy.me.minestrike.Minestrike
 api-version: 1.13
 authors: [DevvyDoo, Courteouss]
+commands:
+  admin:
+    permission: op
+    description: Used to force control of game flow (or print out game details)
+    usage: /admin < start | end | next | status >
