@@ -8,22 +8,37 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.ArrayList;
 
-public class Teams implements Listener {
-    private ArrayList<Player> counterTerror = new ArrayList();
-    private ArrayList<Player> terrorists = new ArrayList();
+public class TeamManager implements Listener {
 
+    private Team counterTerror;
+    private Team terrorists;
+
+    public TeamManager() {
+
+        counterTerror = new Team("Defenders");
+        terrorists = new Team("Attackers");
+
+    }
+
+    public Team getDefenders() {
+        return counterTerror;
+    }
+
+    public Team getAttackers() {
+        return terrorists;
+    }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
         if (terrorists.size() < counterTerror.size()){
-            terrorists.add(player);
+            terrorists.addMember(player);
             System.out.println("t" + terrorists);
         }else if (counterTerror.size() < terrorists.size()){
-            counterTerror.add(player);
+            counterTerror.addMember(player);
             System.out.println("ct" + counterTerror);
         }else{
-            terrorists.add(player);
+            terrorists.addMember(player);
             System.out.println("t" + terrorists);
         }
     }
@@ -31,8 +46,8 @@ public class Teams implements Listener {
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event){
         Player player = event.getPlayer();
-        if (terrorists.contains(player)){
-            terrorists.remove(player);
-        }else counterTerror.remove(player);
+        if (terrorists.hasMember(player)){
+            terrorists.removeMember(player);
+        }else counterTerror.removeMember(player);
     }
 }
