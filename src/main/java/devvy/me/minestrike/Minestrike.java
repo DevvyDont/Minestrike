@@ -1,4 +1,5 @@
 package devvy.me.minestrike;
+import Players.PlayerManager;
 import devvy.me.minestrike.Play.KillDeath;
 import devvy.me.minestrike.Play.Scoreboard;
 import devvy.me.minestrike.Play.Teams;
@@ -10,11 +11,13 @@ public final class Minestrike extends JavaPlugin {
 
     private GameManager gameManager;
 
+
     @Override
     public void onEnable() {
 
        this.getServer().getPluginManager().registerEvents(new Teams(), this);
-       this.getServer().getPluginManager().registerEvents(new KillDeath(), this);
+       this.getServer().getPluginManager().registerEvents(new PlayerManager(this), this);
+
        //this.getServer().getPluginManager().registerEvents(new Scoreboard(), this);
 
 
