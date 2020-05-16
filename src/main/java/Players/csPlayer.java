@@ -1,36 +1,27 @@
 package Players;
 
+import devvy.me.minestrike.Play.KillDeath;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class csPlayer {
+    private int playerKills;
+    private int playerDeaths;
     private Player player;
-    private int playerKills = 0;
-    private int playerDeaths = 0;
-    private int playerCurrency = 0;
+    private KillDeath kdTracker;
 
 
-    @EventHandler
-    public void playerKill(PlayerDeathEvent event){
-        if(event.getEntity().getKiller() != null){
-            playerKills++;
-            System.out.println("K/D: " + playerKills + " / " + playerDeaths);
-        }
 
-
-    }
-    @EventHandler
-    public void playerDeath(PlayerDeathEvent event){
-        event.getEntity();
-        playerDeaths++;
-        System.out.println("K/D: " + playerKills + " / " + playerDeaths);
-
-
+    public csPlayer(Player player) {
+        kdTracker = new KillDeath();
+        this.player = player;
+        playerKills = 0;
+        playerDeaths = 0;
     }
 
-    @EventHandler
-    public void playerCurrency(){
-
+    public KillDeath getKdTracker(){
+        return kdTracker;
     }
+
 }
