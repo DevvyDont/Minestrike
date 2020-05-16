@@ -1,7 +1,4 @@
 package devvy.me.minestrike;
-import Players.PlayerManager;
-import devvy.me.minestrike.Play.KillDeath;
-import devvy.me.minestrike.Play.TeamManager;
 import devvy.me.minestrike.commands.AdminCommand;
 import devvy.me.minestrike.game.GameManager;
 import org.bukkit.plugin.java.JavaPlugin;

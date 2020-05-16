@@ -1,18 +1,18 @@
-package devvy.me.minestrike.Play;
+package devvy.me.minestrike.game;
 
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Team {
+public class CSTeam {
 
     private ArrayList<Player> members;
     private TeamType type;
     private String name;
     private int roundsWon;
 
-    public Team(TeamType type, String name) {
+    public CSTeam(TeamType type, String name) {
 
         members = new ArrayList<>();
 

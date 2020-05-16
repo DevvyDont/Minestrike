@@ -1,17 +1,12 @@
 package devvy.me.minestrike.game;
 
-import Players.PlayerManager;
-import Players.csPlayer;
+import devvy.me.minestrike.player.PlayerManager;
 import devvy.me.minestrike.Minestrike;
-import devvy.me.minestrike.Play.Team;
-import devvy.me.minestrike.Play.TeamManager;
-import devvy.me.minestrike.Play.TeamType;
 import devvy.me.minestrike.round.RoundManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 public class GameManager implements Listener {
 
@@ -65,7 +60,7 @@ public class GameManager implements Listener {
 
         // Handle what we should do for their team
         Player player = event.getPlayer();
-        Team team = teamManager.getPlayerTeam(player);
+        CSTeam team = teamManager.getPlayerTeam(player);
         if (team.getType() == TeamType.SPECTATORS) {
             if (teamManager.getDefenders().size() < teamManager.getAttackers().size()) {
                 teamManager.getDefenders().addMember(player);

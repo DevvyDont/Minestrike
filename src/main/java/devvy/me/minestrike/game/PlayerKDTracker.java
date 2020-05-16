@@ -1,13 +1,13 @@
-package devvy.me.minestrike.Play;
+package devvy.me.minestrike.game;
 
 import org.bukkit.event.Listener;
 
 
-public class KillDeath implements Listener {
+public class PlayerKDTracker implements Listener {
     private int playerKills;
     private int playerDeaths;
 
-    public KillDeath(){
+    public PlayerKDTracker(){
        playerDeaths = 0;
        playerKills = 0;
     }

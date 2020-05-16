@@ -1,4 +1,4 @@
-package devvy.me.minestrike.Play;
+package devvy.me.minestrike.game;
 
 import org.bukkit.event.Listener;
 
