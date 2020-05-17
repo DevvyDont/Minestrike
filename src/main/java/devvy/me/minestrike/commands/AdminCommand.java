@@ -122,6 +122,9 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         if (gameManager.isGameRunning()){
             sender.sendMessage(ChatColor.GREEN + "There is currently a game running.");
             sender.sendMessage(ChatColor.GREEN + "Current Round: " + ChatColor.GRAY + gameManager.getRoundManager().getCurrentRound().type());
+            sender.sendMessage(ChatColor.AQUA + "Defenders: " + gameManager.getTeamManager().getDefenders().getMemberString());
+            sender.sendMessage(ChatColor.RED + "Attackers: " + gameManager.getTeamManager().getAttackers().getMemberString());
+            sender.sendMessage(ChatColor.GRAY + "Spectators: " + gameManager.getTeamManager().getSpectators().getMemberString());
         } else {
             sender.sendMessage(ChatColor.RED + "There is not a game running.");
         }

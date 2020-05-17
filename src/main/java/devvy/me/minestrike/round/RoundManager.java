@@ -1,7 +1,9 @@
 package devvy.me.minestrike.round;
 
 import devvy.me.minestrike.Minestrike;
+import devvy.me.minestrike.game.CSTeam;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -30,7 +32,7 @@ public class RoundManager {
         currentRound.start();
 
         // Go to the next round after DEFAULT_TICK_LENGTH ticks
-        doNextRoundLater(currentRound.type().DEFAULT_TICK_LENGTH);
+        doNextRoundLater(currentRound.type().DEFAULT_TICK_LENGTH, false);
 
     }
 
@@ -41,12 +43,19 @@ public class RoundManager {
         nextRoundTask = null;
     }
 
+    public void teamWonRound(CSTeam team){
+        team.addRoundWin();
+        Bukkit.broadcastMessage(ChatColor.GRAY + team.getName() + " won the round!");
+        nextRound();
+    }
+
     public void nextRound(){
 
-        if (currentRound == null || nextRoundTask == null)
+        if (currentRound == null)
             throw new IllegalStateException("There is no game running right now, can't go to the next round!");
 
         Bukkit.getLogger().info("Ending the current round");
+        nextRoundTask.cancel();
         currentRound.end();
 
         try {
@@ -61,7 +70,8 @@ public class RoundManager {
         Bukkit.getLogger().info("Starting the next round");
         currentRound.start();
 
-        doNextRoundLater(currentRound.type().DEFAULT_TICK_LENGTH);
+        int nextRoundLength = currentRound.type().DEFAULT_TICK_LENGTH;
+        doNextRoundLater(currentRound.type().DEFAULT_TICK_LENGTH, currentRound instanceof ActionRound);
 
     }
 
@@ -70,12 +80,16 @@ public class RoundManager {
      *
      * @param ticks - ticks to run next round later
      */
-    private void doNextRoundLater(int ticks){
+    private void doNextRoundLater(int ticks, boolean actionRoundFlag){
         // Go to the next round after DEFAULT_TICK_LENGTH ticks
         nextRoundTask = new BukkitRunnable(){
             @Override
             public void run() {
-                nextRound();
+
+                if (actionRoundFlag)
+                    teamWonRound(plugin.getGameManager().getTeamManager().getDefenders());
+                 else
+                    nextRound();
             }
         };
 

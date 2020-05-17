@@ -1,5 +1,6 @@
 package devvy.me.minestrike.game;
 
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -67,7 +68,32 @@ public class CSTeam {
         return members;
     }
 
+    public int getNumMembersAlive(){
+        int alive = 0;
+        for (Player player : getMembers())
+            if (player.isValid() && (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE))
+                alive++;
+        return alive;
+    }
+
     public int size(){
         return members.size();
+    }
+
+    /**
+     * Gets a string form of the member's on this team separated by commas
+     * @return
+     */
+    public String getMemberString(){
+
+        if (getMembers().isEmpty())
+            return "Empty!";
+
+        StringBuilder sb = new StringBuilder();
+
+        for (Player p : getMembers())
+            sb.append(p.getName() + ", ");
+
+        return sb.substring(0, sb.length() - 2);
     }
 }

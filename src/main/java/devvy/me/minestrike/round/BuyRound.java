@@ -1,17 +1,21 @@
 package devvy.me.minestrike.round;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.timers.ExperienceTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 public class BuyRound extends RoundBase {
 
     private ExperienceTimer timer;
+    private Minestrike plugin;
 
     public BuyRound(Minestrike plugin) {
         super(plugin);
+        this.plugin = plugin;
     }
 
     @Override
@@ -19,6 +23,12 @@ public class BuyRound extends RoundBase {
 
         for (Player player : Bukkit.getOnlinePlayers())
             player.sendMessage(ChatColor.AQUA + "Starting Buy Round...");
+
+        for (Player p : plugin.getGameManager().getTeamManager().getAttackers().getMembers())
+            p.setGameMode(GameMode.ADVENTURE);
+
+        for (Player p : plugin.getGameManager().getTeamManager().getDefenders().getMembers())
+            p.setGameMode(GameMode.ADVENTURE);
 
         timer = new ExperienceTimer(plugin, type().DEFAULT_TICK_LENGTH);
         timer.startTimer();
@@ -33,6 +43,11 @@ public class BuyRound extends RoundBase {
 
         timer.endTimer();
 
+    }
+
+    @Override
+    public void handlePlayerDeath(Player player) {
+        throw new IllegalStateException("Players cannot die during the buy round!");
     }
 
     @Override

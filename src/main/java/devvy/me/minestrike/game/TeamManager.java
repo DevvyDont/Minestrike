@@ -25,6 +25,24 @@ public class TeamManager implements Listener {
         return terrorists;
     }
 
+    public CSTeam getSpectators() {
+        return spectators;
+    }
+
+    /**
+     * If you pass in defenders, return attackers, and vice versa
+     *
+     * @param team The opposite of the team you want
+     * @return The opposite team
+     */
+    public CSTeam getOppositeTeam(CSTeam team){
+        if (getDefenders() == team)
+            return getAttackers();
+        else if (getAttackers() == team)
+            return getDefenders();
+        throw new IllegalArgumentException("Invalid team passed in of type " + team.getType() + "! Must be attackers or defenders.");
+    }
+
     public CSTeam getPlayerTeam(Player player){
         if (counterTerror.hasMember(player))
             return counterTerror;

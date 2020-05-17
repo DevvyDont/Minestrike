@@ -1,6 +1,7 @@
 package devvy.me.minestrike.player;
 
 import devvy.me.minestrike.Minestrike;
+import devvy.me.minestrike.round.RoundBase;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,6 +37,15 @@ public class PlayerManager implements Listener {
 
     @EventHandler
     public void playerKill(PlayerDeathEvent event){
+
+        RoundBase round = plugin.getGameManager().getRoundManager().getCurrentRound();
+        event.setCancelled(true);
+
+        if (round == null)
+            return;
+
+        round.handlePlayerDeath(event.getEntity());
+
         if(event.getEntity().getKiller() != null){
             CSPlayer victim = getCSPlayer(event.getEntity());
             CSPlayer killer = getCSPlayer(event.getEntity().getKiller());

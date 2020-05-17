@@ -28,6 +28,11 @@ public class IntermissionRound extends RoundBase {
     }
 
     @Override
+    public void handlePlayerDeath(Player player) {
+        Bukkit.getServer().broadcastMessage(player.getDisplayName() + " died!");
+    }
+
+    @Override
     public RoundType type() {
         return RoundType.INTERMISSION;
     }
