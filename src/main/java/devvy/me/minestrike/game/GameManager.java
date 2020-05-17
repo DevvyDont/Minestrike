@@ -55,6 +55,11 @@ public class GameManager implements Listener {
         return roundManager.getCurrentRound() != null;
     }
 
+
+    /**************************************************************************************
+    EVENTS TO HANDLE
+     *************************************************************************************/
+
     @EventHandler
     public void handlePlayerJoined(PlayerJoinEvent event){
 
@@ -62,6 +67,9 @@ public class GameManager implements Listener {
         Player player = event.getPlayer();
         CSTeam team = teamManager.getPlayerTeam(player);
         if (team.getType() == TeamType.SPECTATORS) {
+
+            team.removeMember(player);  // Remove them as a spectator
+
             if (teamManager.getDefenders().size() < teamManager.getAttackers().size()) {
                 teamManager.getDefenders().addMember(player);
                 System.out.println("ct" + teamManager.getDefenders());
