@@ -7,6 +7,10 @@ public final class Minestrike extends JavaPlugin {
 
     private GameManager gameManager;
 
+    public GameManager getGameManager(){
+        return gameManager;
+    }
+
 
     @Override
     public void onEnable() {
