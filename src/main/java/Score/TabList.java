@@ -1,8 +1,8 @@
 package Score;
 
 import devvy.me.minestrike.Minestrike;
-import devvy.me.minestrike.game.CSTeam;
 import devvy.me.minestrike.game.TeamManager;
+import devvy.me.minestrike.player.PlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,14 +17,12 @@ import org.bukkit.scoreboard.ScoreboardManager;
 public class TabList implements Listener {
     private org.bukkit.scoreboard.Team t;
     private org.bukkit.scoreboard.Team ct;
+    private org.bukkit.scoreboard.Team spec;
     private Scoreboard board;
-    private CSTeam terrorists = new TeamManager().getAttackers();
-    private CSTeam counterTerror = new TeamManager().getDefenders();
-    private Player player;
+
 
 
     public TabList() {
-
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         board = manager.getNewScoreboard();
 
@@ -37,42 +35,51 @@ public class TabList implements Listener {
         ct.setPrefix(ChatColor.BLUE + "[CT] " + ChatColor.LIGHT_PURPLE);
         ct.setAllowFriendlyFire(false);
         ct.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
-        TeamManager teamManager = new TeamManager();
-        if (teamManager.getDefenders().hasMember(player)){
+
+        spec = board.registerNewTeam("Spectators");
+        spec.setPrefix(ChatColor.GRAY + "[SPEC] ");
+
+    }
+
+    public void updatePlayerClanTag(Player player){
+        player.setScoreboard(board);
+        Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
+        TeamManager teamManager = plugin.getGameManager().getTeamManager();
+        PlayerManager playerManager = plugin.getGameManager().getPlayerManager();
+
+
+        if (teamManager.getDefenders().hasMember(playerManager.getCSPlayer(player))){
             ct.addPlayer(player);
-        }else if (teamManager.getAttackers().hasMember(player)){
+
+        }else if (teamManager.getAttackers().hasMember(playerManager.getCSPlayer(player))){
             t.addPlayer(player);
+
+        }else {
+            spec.addPlayer(player);
         }
 
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-
-        if(terrorists.hasMember(player)){
-            t.addPlayer(player);
-        }else{
-            ct.addPlayer(player);
-        }
-        player.setScoreboard(board);
-
+        updatePlayerClanTag(event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        if (terrorists.hasMember(player)) {
-            terrorists.removeMember(player);
-        } else if (counterTerror.hasMember(player)) {
-            counterTerror.removeMember(player);
-
+        if(t.hasPlayer(event.getPlayer())){
+            t.removePlayer(event.getPlayer());
+        }else if (ct.hasPlayer(event.getPlayer())){
+            ct.removePlayer(event.getPlayer());
+        }else{
+            spec.removePlayer(event.getPlayer());
         }
     }
 
-    public void updateScoreboard(Minestrike plugin){
+    public void updateScoreboard(){
+        Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
         for (Player p : plugin.getServer().getOnlinePlayers()){
-            p.setDisplayName(p.getName()  + " K/D: " + plugin.getGameManager().getPlayerManager().getCSPlayer(p).getKdTracker().getKDRation());
+            p.setDisplayName(p.getName()  + ChatColor.RED + " K/D: " + plugin.getGameManager().getPlayerManager().getCSPlayer(p).getKdTracker().getKDRation() + ChatColor.WHITE);
         }
         //Need to update scoreboard KD
 

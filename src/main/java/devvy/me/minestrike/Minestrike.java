@@ -19,6 +19,7 @@ public final class Minestrike extends JavaPlugin  {
 
 
         gameManager = new GameManager(this);
+        gameManager.initializeTabList();
 
         AdminCommand adminCommand = new AdminCommand(gameManager);
         getCommand("admin").setExecutor(adminCommand);

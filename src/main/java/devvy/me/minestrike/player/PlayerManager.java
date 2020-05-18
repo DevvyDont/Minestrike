@@ -25,7 +25,7 @@ public class PlayerManager implements Listener {
     }
 
     public CSPlayer getCSPlayer(Player player){
-        CSPlayer ret = playerKDAttributesMap.get(player);
+        CSPlayer ret = playerKDAttributesMap.get(player.getUniqueId());
         if (ret != null)
             return ret;
 
