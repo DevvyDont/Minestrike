@@ -1,5 +1,6 @@
 package devvy.me.minestrike.player;
 
+import Score.TabList;
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.round.RoundBase;
 import org.bukkit.entity.Player;
@@ -37,7 +38,6 @@ public class PlayerManager implements Listener {
 
     @EventHandler
     public void playerKill(PlayerDeathEvent event){
-
         RoundBase round = plugin.getGameManager().getRoundManager().getCurrentRound();
         event.setCancelled(true);
 
@@ -54,6 +54,7 @@ public class PlayerManager implements Listener {
             System.out.println("Killer K/D: " + killer.getKdTracker().getKDRation());
             System.out.println("Victim K/D: " + victim.getKdTracker().getKDRation());
         }
-    }
 
+
+    }
 }

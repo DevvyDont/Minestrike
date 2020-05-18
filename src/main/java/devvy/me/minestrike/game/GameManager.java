@@ -1,5 +1,6 @@
 package devvy.me.minestrike.game;
 
+import Score.TabList;
 import devvy.me.minestrike.player.PlayerManager;
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.round.RoundManager;
@@ -21,10 +22,12 @@ public class GameManager implements Listener {
         roundManager = new RoundManager(plugin);
         teamManager = new TeamManager();
         playerManager = new PlayerManager(plugin);
+        TabList tabList = new TabList();
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         plugin.getServer().getPluginManager().registerEvents(teamManager, plugin);
         plugin.getServer().getPluginManager().registerEvents(playerManager, plugin);
+        plugin.getServer().getPluginManager().registerEvents(tabList, plugin);
     }
 
     public RoundManager getRoundManager() {
@@ -63,6 +66,7 @@ public class GameManager implements Listener {
     @EventHandler
     public void handlePlayerJoined(PlayerJoinEvent event){
 
+
         // Handle what we should do for their team
         Player player = event.getPlayer();
         CSTeam team = teamManager.getPlayerTeam(player);
@@ -78,6 +82,7 @@ public class GameManager implements Listener {
                 System.out.println("t " + teamManager.getAttackers());
             }
         }
+
     }
 
 

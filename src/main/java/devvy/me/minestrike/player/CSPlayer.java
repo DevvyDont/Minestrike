@@ -15,6 +15,7 @@ public class CSPlayer {
         this.player = player;
     }
 
+
     public void resetStats(){
         kdTracker.reset();
     }

@@ -3,7 +3,7 @@ import devvy.me.minestrike.commands.AdminCommand;
 import devvy.me.minestrike.game.GameManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Minestrike extends JavaPlugin {
+public final class Minestrike extends JavaPlugin  {
 
     private GameManager gameManager;
 
