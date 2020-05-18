@@ -1,8 +1,10 @@
 package devvy.me.minestrike.commands;
 
+import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.game.CSTeam;
 import devvy.me.minestrike.game.GameManager;
 import devvy.me.minestrike.game.TeamType;
+import devvy.me.minestrike.player.CSPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -102,15 +104,16 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleSpectateSubcommand(Player player) {
 
-        CSTeam currTeam = gameManager.getTeamManager().getPlayerTeam(player);
+        CSPlayer csPlayer = gameManager.getPlayerManager().getCSPlayer(player);
+        CSTeam currTeam = gameManager.getTeamManager().getPlayerTeam(csPlayer);
 
         if (currTeam.getType() == TeamType.SPECTATORS){
             player.sendMessage(ChatColor.RED + "You are already spectating!");
             return;
         }
 
-        currTeam.removeMember(player);  // Remove them from whatever team they are on
-        gameManager.getTeamManager().getSpectators().addMember(player);  // Add them to spectators
+        currTeam.removeMember(csPlayer);  // Remove them from whatever team they are on
+        gameManager.getTeamManager().getSpectators().addMember(csPlayer);  // Add them to spectators
         player.setGameMode(GameMode.SPECTATOR);
         player.sendMessage(ChatColor.DARK_GRAY + "You are now a spectator");
 
@@ -119,21 +122,23 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleSwapSubcommand(Player player) {
 
-        CSTeam currTeam = gameManager.getTeamManager().getPlayerTeam(player);
+        CSPlayer csPlayer = gameManager.getPlayerManager().getCSPlayer(player);
+
+        CSTeam currTeam = gameManager.getTeamManager().getPlayerTeam(csPlayer);
         CSTeam t = gameManager.getTeamManager().getAttackers();
         CSTeam ct = gameManager.getTeamManager().getDefenders();
 
         // Remove them from their current team and set them to adv just in case
-        currTeam.removeMember(player);
+        currTeam.removeMember(csPlayer);
         player.setGameMode(GameMode.ADVENTURE);
 
         // If they are spectating or a ct, set them to be a t
         if (currTeam.getType() == TeamType.SPECTATORS || currTeam == ct){
-            t.addMember(player);
+            t.addMember(csPlayer);
             player.sendMessage(ChatColor.GOLD + "You are now a T");
         // Must be a t, make them a ct
         } else {
-            ct.addMember(player);
+            ct.addMember(csPlayer);
             player.sendMessage(ChatColor.BLUE + "You are now a CT");
         }
 

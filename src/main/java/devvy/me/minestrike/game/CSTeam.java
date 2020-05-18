@@ -1,5 +1,6 @@
 package devvy.me.minestrike.game;
 
+import devvy.me.minestrike.player.CSPlayer;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -8,7 +9,7 @@ import java.util.Collection;
 
 public class CSTeam {
 
-    private ArrayList<Player> members;
+    private ArrayList<CSPlayer> members;
     private TeamType type;
     private String name;
     private int roundsWon;
@@ -47,16 +48,16 @@ public class CSTeam {
         roundsWon++;
     }
 
-    public boolean hasMember(Player player){
+    public boolean hasMember(CSPlayer player){
         return members.contains(player);
     }
 
-    public void addMember(Player player){
+    public void addMember(CSPlayer player){
         if (!members.contains(player))
             members.add(player);
     }
 
-    public void removeMember(Player player){
+    public void removeMember(CSPlayer player){
         members.remove(player);
     }
 
@@ -64,14 +65,14 @@ public class CSTeam {
         members = new ArrayList<>();
     }
 
-    public Collection<Player> getMembers(){
+    public Collection<CSPlayer> getMembers(){
         return members;
     }
 
     public int getNumMembersAlive(){
         int alive = 0;
-        for (Player player : getMembers())
-            if (player.isValid() && (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE))
+        for (CSPlayer player : getMembers())
+            if (player.getSpigotPlayer().isValid() && (player.getSpigotPlayer().getGameMode() == GameMode.SURVIVAL || player.getSpigotPlayer().getGameMode() == GameMode.ADVENTURE))
                 alive++;
         return alive;
     }
@@ -91,8 +92,8 @@ public class CSTeam {
 
         StringBuilder sb = new StringBuilder();
 
-        for (Player p : getMembers())
-            sb.append(p.getName() + ", ");
+        for (CSPlayer p : getMembers())
+            sb.append(p.getSpigotPlayer().getName() + ", ");
 
         return sb.substring(0, sb.length() - 2);
     }

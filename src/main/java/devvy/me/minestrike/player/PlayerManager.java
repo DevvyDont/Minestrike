@@ -5,16 +5,19 @@ import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.round.RoundBase;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class PlayerManager implements Listener {
 
 
     private Minestrike plugin;
-    private HashMap<Player, CSPlayer> playerKDAttributesMap;
+    private HashMap<UUID, CSPlayer> playerKDAttributesMap;
 
     public PlayerManager(Minestrike plugin){
         this.plugin = plugin;
@@ -26,13 +29,30 @@ public class PlayerManager implements Listener {
         if (ret != null)
             return ret;
 
-        playerKDAttributesMap.put(player, new CSPlayer(player));
+        playerKDAttributesMap.put(player.getUniqueId(), new CSPlayer(player));
         return getCSPlayer(player);
     }
 
     public void resetPlayers(){
         for (CSPlayer p : playerKDAttributesMap.values())
             p.resetStats();
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerJoin(PlayerJoinEvent event){
+
+        // Handle a new player right away
+        CSPlayer csPlayer = playerKDAttributesMap.get(event.getPlayer().getUniqueId());
+
+        // If its null this is a new player
+        if (csPlayer == null){
+            csPlayer = new CSPlayer(event.getPlayer());
+            playerKDAttributesMap.put(event.getPlayer().getUniqueId(), csPlayer);
+        } else {
+            // Update the player to be the new instance of the player that joined
+            csPlayer.setSpigotPlayer(event.getPlayer());
+        }
+
     }
 
 

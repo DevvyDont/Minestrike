@@ -1,5 +1,7 @@
 package devvy.me.minestrike.game;
 
+import devvy.me.minestrike.Minestrike;
+import devvy.me.minestrike.player.CSPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -43,7 +45,8 @@ public class TeamManager implements Listener {
         throw new IllegalArgumentException("Invalid team passed in of type " + team.getType() + "! Must be attackers or defenders.");
     }
 
-    public CSTeam getPlayerTeam(Player player){
+    public CSTeam getPlayerTeam(CSPlayer player){
+
         if (counterTerror.hasMember(player))
             return counterTerror;
         else if (terrorists.hasMember(player))
