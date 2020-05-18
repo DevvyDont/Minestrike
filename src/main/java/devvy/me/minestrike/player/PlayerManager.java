@@ -8,12 +8,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class PlayerManager implements Listener {
 
 
     private Minestrike plugin;
-    private HashMap<Player, CSPlayer> playerKDAttributesMap;
+    private HashMap<UUID, CSPlayer> playerKDAttributesMap;
 
     public PlayerManager(Minestrike plugin){
         this.plugin = plugin;
@@ -25,7 +26,7 @@ public class PlayerManager implements Listener {
         if (ret != null)
             return ret;
 
-        playerKDAttributesMap.put(player, new CSPlayer(player));
+        playerKDAttributesMap.put(player.getUniqueId(), new CSPlayer(player));
         return getCSPlayer(player);
     }
 
