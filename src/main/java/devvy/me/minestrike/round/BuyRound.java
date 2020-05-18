@@ -2,6 +2,7 @@ package devvy.me.minestrike.round;
 
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import devvy.me.minestrike.Minestrike;
+import devvy.me.minestrike.player.CSPlayer;
 import devvy.me.minestrike.timers.ExperienceTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,11 +25,11 @@ public class BuyRound extends RoundBase {
         for (Player player : Bukkit.getOnlinePlayers())
             player.sendMessage(ChatColor.AQUA + "Starting Buy Round...");
 
-        for (Player p : plugin.getGameManager().getTeamManager().getAttackers().getMembers())
-            p.setGameMode(GameMode.ADVENTURE);
+        for (CSPlayer p : plugin.getGameManager().getTeamManager().getAttackers().getMembers())
+            p.getSpigotPlayer().setGameMode(GameMode.ADVENTURE);
 
-        for (Player p : plugin.getGameManager().getTeamManager().getDefenders().getMembers())
-            p.setGameMode(GameMode.ADVENTURE);
+        for (CSPlayer p : plugin.getGameManager().getTeamManager().getDefenders().getMembers())
+            p.getSpigotPlayer().setGameMode(GameMode.ADVENTURE);
 
         timer = new ExperienceTimer(plugin, type().DEFAULT_TICK_LENGTH);
         timer.startTimer();

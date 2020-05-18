@@ -1,9 +1,9 @@
 package devvy.me.minestrike.game;
 
+import devvy.me.minestrike.player.CSPlayer;
 import devvy.me.minestrike.player.PlayerManager;
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.round.RoundManager;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -64,7 +64,7 @@ public class GameManager implements Listener {
     public void handlePlayerJoined(PlayerJoinEvent event){
 
         // Handle what we should do for their team
-        Player player = event.getPlayer();
+        CSPlayer player = getPlayerManager().getCSPlayer(event.getPlayer());
         CSTeam team = teamManager.getPlayerTeam(player);
         if (team.getType() == TeamType.SPECTATORS) {
 

@@ -3,6 +3,7 @@ package devvy.me.minestrike.round;
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.game.CSTeam;
 import devvy.me.minestrike.game.TeamType;
+import devvy.me.minestrike.player.CSPlayer;
 import devvy.me.minestrike.timers.ExperienceTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -42,8 +43,10 @@ public class ActionRound extends RoundBase {
     @Override
     public void handlePlayerDeath(Player player) {
 
+        CSPlayer csPlayer = plugin.getGameManager().getPlayerManager().getCSPlayer(player);
+
         // Get the player's team
-        CSTeam victimsTeam = plugin.getGameManager().getTeamManager().getPlayerTeam(player);
+        CSTeam victimsTeam = plugin.getGameManager().getTeamManager().getPlayerTeam(csPlayer);
 
         // Just in case
         if (victimsTeam.getType() == TeamType.SPECTATORS)
