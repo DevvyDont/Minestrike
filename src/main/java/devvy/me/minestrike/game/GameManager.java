@@ -1,8 +1,7 @@
 package devvy.me.minestrike.game;
 
 
-import Score.Sidebar;
-import Score.TabList;
+import devvy.me.minestrike.scoreboard.Sidebar;
 import devvy.me.minestrike.player.CSPlayer;
 import devvy.me.minestrike.player.PlayerManager;
 import devvy.me.minestrike.Minestrike;

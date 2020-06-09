@@ -1,6 +1,5 @@
 package devvy.me.minestrike.player;
 
-import Score.TabList;
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.round.RoundBase;
 import org.bukkit.entity.Player;

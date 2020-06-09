@@ -1,4 +1,4 @@
-package Score;
+package devvy.me.minestrike.scoreboard;
 
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.game.TeamManager;
@@ -14,34 +14,30 @@ import devvy.me.minestrike.player.PlayerManager;
 
 public class Sidebar implements Listener {
 
-    private Scoreboard mainScoreboard;
-    private Objective mainScoreboardObjective;
+    private final Scoreboard mainScoreboard;
 
-    private Score blankLine1;
-    private Team mapLine;
-    private Score blankLine2;
-    private Team scoreLabelLine;
-    private Team actualScoreLine;
-    private Score blankLine3;
-    private Team timeRemLine;
+    private final Team mapLine;
+    private final Team scoreLabelLine;
+    private final Team actualScoreLine;
+    private final Team timeRemLine;
 
-    private Team t;
-    private Team ct;
-    private Team spec;
+    private final Team t;
+    private final Team ct;
+    private final Team spec;
 
     public Sidebar() {
 
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         mainScoreboard = manager.getNewScoreboard();
-        mainScoreboardObjective = mainScoreboard.registerNewObjective("Stats", "dummy", ChatColor.RED + "MINESTRIKE");
+        Objective mainScoreboardObjective = mainScoreboard.registerNewObjective("Stats", "dummy", ChatColor.RED + "MINESTRIKE");
         mainScoreboardObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-        blankLine1 = mainScoreboardObjective.getScore("  ");
+        Score blankLine1 = mainScoreboardObjective.getScore("  ");
         mapLine = mainScoreboard.registerNewTeam("mapLine");
-        blankLine2 = mainScoreboardObjective.getScore(" ");
+        Score blankLine2 = mainScoreboardObjective.getScore(" ");
         scoreLabelLine = mainScoreboard.registerNewTeam("scoreLabelLine");
         actualScoreLine = mainScoreboard.registerNewTeam("actualScoreLine");
-        blankLine3 = mainScoreboardObjective.getScore("   ");
+        Score blankLine3 = mainScoreboardObjective.getScore("   ");
         timeRemLine = mainScoreboard.registerNewTeam("timeRemLine");
 
         blankLine1.setScore(14);
@@ -65,7 +61,7 @@ public class Sidebar implements Listener {
         t = mainScoreboard.registerNewTeam("Terrorists");
         t.setPrefix(ChatColor.GOLD + "[T] " + ChatColor.RED);
         t.setAllowFriendlyFire(false);
-        t.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+        t.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);  // TODO: use Team#setOption() instead since what we have is deprecated, not sure how this new method functions atm
 
         ct = mainScoreboard.registerNewTeam("Defenders");
         ct.setPrefix(ChatColor.BLUE + "[CT] " + ChatColor.LIGHT_PURPLE);
@@ -125,10 +121,10 @@ public class Sidebar implements Listener {
 
         mapLine.setPrefix("Current Map: ");
         mapLine.setSuffix(mapName);
-        scoreLabelLine.setPrefix("== Score ==");
-        actualScoreLine.setPrefix(String.format("%d - %d", ctScore, tScore));
-        timeRemLine.setPrefix(String.format("%ds ", timeRemaining));
-        timeRemLine.setSuffix(String.format("[%d v %d]", ctsAlive, tsAlive));
+        scoreLabelLine.setPrefix(ChatColor.YELLOW + "      - Score -      ");
+        actualScoreLine.setPrefix(String.format("    %s%d %s- %s%d    ", ChatColor.AQUA, ctScore, ChatColor.GRAY, ChatColor.RED, tScore));
+        timeRemLine.setPrefix(String.format(ChatColor.RED + "%ds ", timeRemaining));
+        timeRemLine.setSuffix(String.format(ChatColor.GRAY + "[%s%d %sv %s%d]", ChatColor.AQUA, ctsAlive, ChatColor.WHITE, ChatColor.RED, tsAlive));
 
     }
 
