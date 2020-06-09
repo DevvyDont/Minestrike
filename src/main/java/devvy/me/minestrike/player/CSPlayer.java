@@ -7,11 +7,13 @@ public class CSPlayer {
 
     private Player spigotPlayer;
     private PlayerKDTracker kdTracker;
+    private int money;
 
 
     public CSPlayer(Player player) {
         kdTracker = new PlayerKDTracker();
         this.spigotPlayer = player;
+        this.money = 0;
     }
 
     public Player getSpigotPlayer() {
@@ -22,6 +24,20 @@ public class CSPlayer {
         this.spigotPlayer = spigotPlayer;
     }
 
+    public int getMoney() {
+        return money;
+    }
+
+    public boolean spendMoney(int amount) {
+        if (amount > money)
+            return false;
+        money -= amount;
+        return true;
+    }
+
+    public void addMoney(int amount){
+        money += amount;
+    }
 
     public void resetStats(){
         kdTracker.reset();
