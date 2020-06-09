@@ -77,6 +77,13 @@ public class CSTeam {
         return alive;
     }
 
+    public int getTeamTotalCurrency() {
+        int economy = 0;
+        for (CSPlayer player : getMembers())
+            economy += player.getMoney();
+        return economy;
+    }
+
     public int size(){
         return members.size();
     }
