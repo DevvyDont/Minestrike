@@ -7,8 +7,8 @@ public abstract class RoundBase {
 
     protected Minestrike plugin;
 
-    public RoundBase(Minestrike plugin) {
-        this.plugin = plugin;
+    public RoundBase() {
+        this.plugin = Minestrike.getPlugin(Minestrike.class);
     }
 
     public abstract void start();

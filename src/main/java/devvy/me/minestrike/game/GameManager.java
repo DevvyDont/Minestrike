@@ -14,20 +14,19 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class GameManager implements Listener {
 
-    private Minestrike plugin;
     private final RoundManager roundManager;
     private final TeamManager teamManager;
     private final PlayerManager playerManager;
     private final Sidebar scoreboardManager;
 
-    public GameManager(Minestrike plugin) {
-        this.plugin = plugin;
+    public GameManager() {
+
+        Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
 
         roundManager = new RoundManager(plugin);
         teamManager = new TeamManager();
         playerManager = new PlayerManager(plugin);
         scoreboardManager = new Sidebar();
-
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         plugin.getServer().getPluginManager().registerEvents(teamManager, plugin);

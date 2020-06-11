@@ -1,6 +1,5 @@
 package devvy.me.minestrike.round;
 
-import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.items.CustomItemType;
 import devvy.me.minestrike.player.CSPlayer;
 import devvy.me.minestrike.timers.ExperienceTimer;
@@ -12,11 +11,9 @@ import org.bukkit.entity.Player;
 public class BuyRound extends RoundBase {
 
     private ExperienceTimer timer;
-    private Minestrike plugin;
 
-    public BuyRound(Minestrike plugin) {
-        super(plugin);
-        this.plugin = plugin;
+    public BuyRound() {
+        super();
     }
 
     @Override

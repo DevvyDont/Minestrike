@@ -20,23 +20,39 @@ public final class Minestrike extends JavaPlugin  {
     @Override
     public void onEnable() {
 
-       //this.getServer().getPluginManager().registerEvents(new Scoreboard(), this);
-
-
-        gameManager = new GameManager(this);
-        customItemManager = new CustomItemManager();
-
-        gameManager.initializeTabList();
-
-        AdminCommand adminCommand = new AdminCommand(gameManager);
-        getCommand("admin").setExecutor(adminCommand);
-        getCommand("admin").setTabCompleter(adminCommand);
-
+        initializeManagers();
+        initializeCommands();
 
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    private void initializeManagers() {
+
+        gameManager = new GameManager();
+        customItemManager = new CustomItemManager();
+
+        // Some scoreboard/teams stuff relies on the entire manager to be generated so this has to be outside the constructor
+        gameManager.initializeTabList();
+
+    }
+
+    private void initializeCommands() {
+
+        // First init the admin command's executor and tab completer
+        AdminCommand adminCommand = new AdminCommand(gameManager);
+
+        try {
+            getCommand("admin").setExecutor(adminCommand);
+            getCommand("admin").setTabCompleter(adminCommand);
+        } catch (NullPointerException e) {
+            getLogger().severe("Command doesn't exist in plugin.yml! Aborting startup!");
+            e.printStackTrace();
+            getServer().getPluginManager().disablePlugin(this);
+        }
+
     }
 }

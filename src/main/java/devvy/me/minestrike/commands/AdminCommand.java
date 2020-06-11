@@ -1,6 +1,5 @@
 package devvy.me.minestrike.commands;
 
-import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.game.CSTeam;
 import devvy.me.minestrike.game.GameManager;
 import devvy.me.minestrike.game.TeamType;
@@ -20,7 +19,7 @@ import java.util.List;
 
 public class AdminCommand implements CommandExecutor, TabCompleter {
 
-    private GameManager gameManager;
+    private final GameManager gameManager;
 
     public AdminCommand(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -184,11 +183,11 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
     private void handleStatusSubcommand(CommandSender sender){
 
         // Game running?
-        if (gameManager.isGameRunning()){
+        if (gameManager.isGameRunning())
             sender.sendMessage(ChatColor.GREEN + "Current Round: " + ChatColor.GRAY + gameManager.getRoundManager().getCurrentRound().type());
-        } else {
+         else
             sender.sendMessage(ChatColor.RED + "There is not a game running.");
-        }
+
         sender.sendMessage(ChatColor.GREEN + "There is currently a game running.");
         sender.sendMessage(ChatColor.AQUA + "Defenders: " + gameManager.getTeamManager().getDefenders().getMemberString());
         sender.sendMessage(ChatColor.RED + "Attackers: " + gameManager.getTeamManager().getAttackers().getMemberString());

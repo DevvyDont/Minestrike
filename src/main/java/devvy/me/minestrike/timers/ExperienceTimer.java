@@ -18,7 +18,7 @@ public class ExperienceTimer {
                 p.setExp(1 - getPercentTimeCompleted());
             }
 
-            if (currentTick >= targetTick)
+            if (currentTick >= TARGET_TICK)
                 endTimer();
 
         }
@@ -27,20 +27,16 @@ public class ExperienceTimer {
     Minestrike plugin;
     BukkitRunnable task;
     private int currentTick = 0;
-    private int targetTick;
+    private final int TARGET_TICK;
 
     public ExperienceTimer(Minestrike plugin, int duration) {
-
         this.plugin = plugin;
-        this.targetTick = duration;
-
+        this.TARGET_TICK = duration;
     }
 
     public void startTimer(){
-
         task = new ExperienceTimerTask();
         task.runTaskTimer(plugin, 0, 1);
-
     }
 
     public void endTimer(){
@@ -56,11 +52,11 @@ public class ExperienceTimer {
     }
 
     private float getPercentTimeCompleted() {
-        return (float) currentTick / targetTick;
+        return (float) currentTick / TARGET_TICK;
     }
 
     private int getSecondsLeft() {
-        int totalSeconds = Math.round((float)targetTick / 20);
+        int totalSeconds = Math.round((float) TARGET_TICK / 20);
         int currentSecond = Math.round((float)currentTick / 20);
         return totalSeconds - currentSecond;
     }

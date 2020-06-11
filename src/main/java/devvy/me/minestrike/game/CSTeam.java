@@ -2,7 +2,6 @@ package devvy.me.minestrike.game;
 
 import devvy.me.minestrike.player.CSPlayer;
 import org.bukkit.GameMode;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +9,7 @@ import java.util.Collection;
 public class CSTeam {
 
     private ArrayList<CSPlayer> members;
-    private TeamType type;
+    private final TeamType type;
     private String name;
     private int roundsWon;
 
@@ -96,7 +95,7 @@ public class CSTeam {
 
     /**
      * Gets a string form of the member's on this team separated by commas
-     * @return
+     * @return A string representation of this team
      */
     public String getMemberString(){
 
@@ -106,7 +105,7 @@ public class CSTeam {
         StringBuilder sb = new StringBuilder();
 
         for (CSPlayer p : getMembers())
-            sb.append(p.getSpigotPlayer().getName() + ", ");
+            sb.append(p.getSpigotPlayer().getName()).append(", ");
 
         return sb.substring(0, sb.length() - 2);
     }

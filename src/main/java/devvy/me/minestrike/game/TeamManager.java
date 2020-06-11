@@ -1,15 +1,13 @@
 package devvy.me.minestrike.game;
 
-import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.player.CSPlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 public class TeamManager implements Listener {
 
-    private CSTeam counterTerror;
-    private CSTeam terrorists;
-    private CSTeam spectators;
+    private final CSTeam counterTerror;
+    private final CSTeam terrorists;
+    private final CSTeam spectators;
 
     public TeamManager() {
 

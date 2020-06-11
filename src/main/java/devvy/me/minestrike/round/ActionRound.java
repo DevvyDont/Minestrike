@@ -1,6 +1,5 @@
 package devvy.me.minestrike.round;
 
-import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.game.CSTeam;
 import devvy.me.minestrike.game.TeamType;
 import devvy.me.minestrike.player.CSPlayer;
@@ -13,11 +12,9 @@ import org.bukkit.entity.Player;
 public class ActionRound extends RoundBase {
 
     private ExperienceTimer timer;
-    private Minestrike plugin;
 
-    public ActionRound(Minestrike plugin) {
-        super(plugin);
-        this.plugin = plugin;
+    public ActionRound() {
+        super();
     }
 
     @Override

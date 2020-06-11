@@ -8,13 +8,12 @@ import org.bukkit.persistence.PersistentDataType;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class CustomItemManager {
 
     public static final NamespacedKey CUSTOM_ITEM_KEY = new NamespacedKey(Minestrike.getPlugin(Minestrike.class), "customitem");
 
-    private Map<CustomItemType, CustomItem> customItemMap;
+    private final Map<CustomItemType, CustomItem> customItemMap;
 
     public CustomItemManager() {
 

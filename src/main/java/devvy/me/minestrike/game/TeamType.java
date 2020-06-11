@@ -4,6 +4,6 @@ public enum TeamType {
 
     ATTACKERS,
     DEFENDERS,
-    SPECTATORS;
+    SPECTATORS
 
 }

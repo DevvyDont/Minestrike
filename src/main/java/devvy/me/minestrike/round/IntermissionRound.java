@@ -1,14 +1,13 @@
 package devvy.me.minestrike.round;
 
-import devvy.me.minestrike.Minestrike;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class IntermissionRound extends RoundBase {
 
-    public IntermissionRound(Minestrike plugin) {
-        super(plugin);
+    public IntermissionRound() {
+        super();
     }
 
     @Override

@@ -28,7 +28,7 @@ public class RoundManager {
             endRoundLoop();
         }
 
-        currentRound = new BuyRound(plugin);
+        currentRound = new BuyRound();
         currentRound.start();
 
         // Go to the next round after DEFAULT_TICK_LENGTH ticks
@@ -70,9 +70,7 @@ public class RoundManager {
         Bukkit.getLogger().info("Starting the next round");
         currentRound.start();
 
-        int nextRoundLength = currentRound.type().DEFAULT_TICK_LENGTH;
         doNextRoundLater(currentRound.type().DEFAULT_TICK_LENGTH, currentRound instanceof ActionRound);
-
     }
 
     /**

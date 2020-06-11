@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 public class CSPlayer {
 
     private Player spigotPlayer;
-    private PlayerKDTracker kdTracker;
+    private final PlayerKDTracker kdTracker;
     private int money;
 
 
