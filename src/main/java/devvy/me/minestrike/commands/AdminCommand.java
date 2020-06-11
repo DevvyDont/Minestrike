@@ -193,6 +193,8 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(ChatColor.AQUA + "Defenders: " + gameManager.getTeamManager().getDefenders().getMemberString());
         sender.sendMessage(ChatColor.RED + "Attackers: " + gameManager.getTeamManager().getAttackers().getMemberString());
         sender.sendMessage(ChatColor.GRAY + "Spectators: " + gameManager.getTeamManager().getSpectators().getMemberString());
+        sender.sendMessage();
+        sender.sendMessage(ChatColor.GRAY + "The score is [" + ChatColor.AQUA + gameManager.getTeamManager().getDefenders().getRoundsWon() + ChatColor.GRAY + " - " + ChatColor.RED + gameManager.getTeamManager().getAttackers().getRoundsWon() + ChatColor.GRAY + "]");
 
     }
 

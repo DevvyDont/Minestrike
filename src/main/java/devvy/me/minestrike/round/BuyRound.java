@@ -1,6 +1,7 @@
 package devvy.me.minestrike.round;
 
 import devvy.me.minestrike.Minestrike;
+import devvy.me.minestrike.items.CustomItemType;
 import devvy.me.minestrike.player.CSPlayer;
 import devvy.me.minestrike.timers.ExperienceTimer;
 import org.bukkit.Bukkit;
@@ -24,14 +25,21 @@ public class BuyRound extends RoundBase {
         for (Player player : Bukkit.getOnlinePlayers())
             player.sendMessage(ChatColor.AQUA + "Starting Buy Round...");
 
-        for (CSPlayer p : plugin.getGameManager().getTeamManager().getAttackers().getMembers())
+        for (CSPlayer p : plugin.getGameManager().getTeamManager().getAttackers().getMembers()) {
             p.getSpigotPlayer().setGameMode(GameMode.ADVENTURE);
+            // Remove any bombs from the t's
+            p.getSpigotPlayer().getInventory().remove(plugin.getCustomItemManager().getCustomItemStack(CustomItemType.BOMB));
+        }
 
         for (CSPlayer p : plugin.getGameManager().getTeamManager().getDefenders().getMembers())
             p.getSpigotPlayer().setGameMode(GameMode.ADVENTURE);
 
         timer = new ExperienceTimer(plugin, type().DEFAULT_TICK_LENGTH);
         timer.startTimer();
+
+        CSPlayer randomAttacker = plugin.getGameManager().getTeamManager().getAttackers().getRandomMember();
+        if (randomAttacker != null)
+            randomAttacker.getSpigotPlayer().getInventory().addItem(plugin.getCustomItemManager().getCustomItemStack(CustomItemType.BOMB));
 
     }
 

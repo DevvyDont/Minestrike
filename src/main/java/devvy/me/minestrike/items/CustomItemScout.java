@@ -17,7 +17,7 @@ public class CustomItemScout extends CustomItem {
 
     @Override
     public void setupItemStack() {
-        this.itemStack = new ItemStack(Material.CROSSBOW);
+        this.itemStack = new ItemStack(customItemType.MATERIAL);
         ItemMeta meta = itemStack.getItemMeta();
         meta.setDisplayName(ChatColor.RED + "SCOUT");
         itemStack.setItemMeta(meta);

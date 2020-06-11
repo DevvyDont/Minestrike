@@ -69,6 +69,12 @@ public class CSTeam {
         return members;
     }
 
+    public CSPlayer getRandomMember() {
+        if (members.isEmpty())
+            return null;
+        return members.get((int) (Math.random() * members.size()));
+    }
+
     public int getNumMembersAlive(){
         int alive = 0;
         for (CSPlayer player : getMembers())
