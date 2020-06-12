@@ -170,21 +170,21 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
     private void handleNextSubcommand(CommandSender sender){
 
-        // We can only go to next round if there is a game
+        // We can only go to next phase if there is a game
         if (!gameManager.isGameRunning()){
             sender.sendMessage(ChatColor.RED + "There is no game running!");
             return;
         }
 
-        gameManager.nextRound();
-        sender.sendMessage(ChatColor.GREEN + "Going to the next round!!!");
+        gameManager.nextPhase();
+        sender.sendMessage(ChatColor.GREEN + "Going to the next phase!!!");
     }
 
     private void handleStatusSubcommand(CommandSender sender){
 
         // Game running?
         if (gameManager.isGameRunning())
-            sender.sendMessage(ChatColor.GREEN + "Current Round: " + ChatColor.GRAY + gameManager.getRoundManager().getCurrentRound().type());
+            sender.sendMessage(ChatColor.GREEN + "Current Phase: " + ChatColor.GRAY + gameManager.getPhaseManager().getCurrentPhase().type());
          else
             sender.sendMessage(ChatColor.RED + "There is not a game running.");
 

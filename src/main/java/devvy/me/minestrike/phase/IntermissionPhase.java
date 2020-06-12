@@ -1,14 +1,14 @@
-package devvy.me.minestrike.round;
+package devvy.me.minestrike.phase;
 
 import devvy.me.minestrike.timers.ExperienceTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class IntermissionRound extends RoundBase {
+public class IntermissionPhase extends PhaseBase {
     private ExperienceTimer timer;
 
-    public IntermissionRound() {
+    public IntermissionPhase() {
         super();
     }
 
@@ -17,7 +17,7 @@ public class IntermissionRound extends RoundBase {
     public void start() {
 
         for (Player player : Bukkit.getOnlinePlayers())
-            player.sendMessage(ChatColor.AQUA + "Starting Intermission Round...");
+            player.sendMessage(ChatColor.AQUA + "Starting Intermission Phase...");
 
         timer = new ExperienceTimer(plugin, type().DEFAULT_TICK_LENGTH);
         timer.startTimer();
@@ -27,7 +27,7 @@ public class IntermissionRound extends RoundBase {
     public void end() {
 
         for (Player player : Bukkit.getOnlinePlayers())
-            player.sendMessage(ChatColor.RED + "Ending Intermission Round...");
+            player.sendMessage(ChatColor.RED + "Ending Intermission Phase...");
         timer.endTimer();
 
     }
@@ -38,13 +38,13 @@ public class IntermissionRound extends RoundBase {
     }
 
     @Override
-    public RoundType type() {
-        return RoundType.INTERMISSION;
+    public PhaseType type() {
+        return PhaseType.INTERMISSION;
     }
 
     @Override
-    public RoundType next() {
-        return RoundType.BUY;
+    public PhaseType next() {
+        return PhaseType.BUY;
     }
     public ExperienceTimer getTimer() {
         return timer;

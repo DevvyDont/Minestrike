@@ -1,4 +1,4 @@
-package devvy.me.minestrike.round;
+package devvy.me.minestrike.phase;
 
 import devvy.me.minestrike.game.GameState;
 import devvy.me.minestrike.items.CustomItemType;
@@ -9,11 +9,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-public class BuyRound extends RoundBase {
+public class BuyPhase extends PhaseBase {
 
     private ExperienceTimer timer;
 
-    public BuyRound() {
+    public BuyPhase() {
         super();
     }
 
@@ -26,7 +26,7 @@ public class BuyRound extends RoundBase {
         plugin.getGameManager().setState(GameState.BUY_IN_PROGRESS);
 
         for (Player player : Bukkit.getOnlinePlayers())
-            player.sendMessage(ChatColor.AQUA + "Starting Buy Round...");
+            player.sendMessage(ChatColor.AQUA + "Starting Buy Phase...");
 
         for (CSPlayer p : plugin.getGameManager().getTeamManager().getAttackers().getMembers()) {
             p.getSpigotPlayer().setGameMode(GameMode.ADVENTURE);
@@ -50,7 +50,7 @@ public class BuyRound extends RoundBase {
     public void end() {
 
         for (Player player : Bukkit.getOnlinePlayers())
-            player.sendMessage(ChatColor.RED + "Ending Buy Round...");
+            player.sendMessage(ChatColor.RED + "Ending Buy Phase...");
 
         timer.endTimer();
 
@@ -58,17 +58,17 @@ public class BuyRound extends RoundBase {
 
     @Override
     public void handlePlayerDeath(Player player) {
-        plugin.getLogger().warning(player.getName() + " died during the buy round. This shouldn't happen.");
+        plugin.getLogger().warning(player.getName() + " died during the buy phase. This shouldn't happen.");
     }
 
     @Override
-    public RoundType type() {
-        return RoundType.BUY;
+    public PhaseType type() {
+        return PhaseType.BUY;
     }
 
     @Override
-    public RoundType next() {
-        return RoundType.ACTION;
+    public PhaseType next() {
+        return PhaseType.ACTION;
     }
     public ExperienceTimer getTimer() {
         return timer;

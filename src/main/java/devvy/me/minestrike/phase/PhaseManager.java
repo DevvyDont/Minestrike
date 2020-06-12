@@ -1,48 +1,47 @@
-package devvy.me.minestrike.round;
+package devvy.me.minestrike.phase;
 
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.game.CSTeam;
 import devvy.me.minestrike.player.CSPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class RoundManager {
+public class PhaseManager {
 
     private final Minestrike plugin;
-    private RoundBase currentRound;
-    private BukkitRunnable nextRoundTask;
+    private PhaseBase currentPhase;
+    private BukkitRunnable nextPhaseTask;
 
-    public RoundManager(Minestrike plugin) {
+    public PhaseManager(Minestrike plugin) {
         this.plugin = plugin;
     }
 
-    public RoundBase getCurrentRound() {
-        return currentRound;
+    public PhaseBase getCurrentPhase() {
+        return currentPhase;
     }
 
-    public void startRoundLoop(){
+    public void startPhaseLoop(){
 
-        if (nextRoundTask != null){
-            endRoundLoop();
+        if (nextPhaseTask != null){
+            endPhaseLoop();
         }
 
-        currentRound = new BuyRound();
-        currentRound.start();
+        currentPhase = new BuyPhase();
+        currentPhase.start();
 
-        // Go to the next round after DEFAULT_TICK_LENGTH ticks
-        doNextRoundLater(currentRound.type().DEFAULT_TICK_LENGTH, false);
+        // Go to the next phase after DEFAULT_TICK_LENGTH ticks
+        doNextPhaseLater(currentPhase.type().DEFAULT_TICK_LENGTH, false);
 
     }
 
-    public void endRoundLoop(){
-        nextRoundTask.cancel();
-        currentRound.end();
-        currentRound = null;
-        nextRoundTask = null;
+    public void endPhaseLoop(){
+        nextPhaseTask.cancel();
+        currentPhase.end();
+        currentPhase = null;
+        nextPhaseTask = null;
     }
 
     public void teamLostRound(CSTeam team){
@@ -191,33 +190,33 @@ public class RoundManager {
 
         team.addRoundWin();
         Bukkit.broadcastMessage(ChatColor.GRAY + team.getName() + " won the round!");
-        nextRound();
+        nextPhase();
 
         plugin.getGameManager().incrementRoundNumber();
     }
 
-    public void nextRound(){
+    public void nextPhase(){
 
-        if (currentRound == null)
-            throw new IllegalStateException("There is no game running right now, can't go to the next round!");
+        if (currentPhase == null)
+            throw new IllegalStateException("There is no game running right now, can't go to the next phase!");
 
-        Bukkit.getLogger().info("Ending the current round");
-        nextRoundTask.cancel();
-        currentRound.end();
+        Bukkit.getLogger().info("Ending the current phase");
+        nextPhaseTask.cancel();
+        currentPhase.end();
 
         try {
-            currentRound = currentRound.next().CLAZZ.getConstructor().newInstance();
+            currentPhase = currentPhase.next().CLAZZ.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException exception){
             exception.printStackTrace();
-            Bukkit.getLogger().warning("Failed to create new round. Ending the game...");
-            endRoundLoop();
+            Bukkit.getLogger().warning("Failed to create new phase. Ending the game...");
+            endPhaseLoop();
             return;
         }
 
-        Bukkit.getLogger().info("Starting the next round");
-        currentRound.start();
+        Bukkit.getLogger().info("Starting the next phase");
+        currentPhase.start();
 
-        doNextRoundLater(currentRound.type().DEFAULT_TICK_LENGTH, currentRound instanceof ActionRound);
+        doNextPhaseLater(currentPhase.type().DEFAULT_TICK_LENGTH, currentPhase instanceof ActionPhase);
     }
 
     /**
@@ -225,20 +224,20 @@ public class RoundManager {
      *
      * @param ticks - ticks to run next round later
      */
-    private void doNextRoundLater(int ticks, boolean actionRoundFlag){
-        // Go to the next round after DEFAULT_TICK_LENGTH ticks
-        nextRoundTask = new BukkitRunnable(){
+    private void doNextPhaseLater(int ticks, boolean actionPhaseFlag){
+        // Go to the next phase after DEFAULT_TICK_LENGTH ticks
+        nextPhaseTask = new BukkitRunnable(){
             @Override
             public void run() {
 
-                if (actionRoundFlag)
+                if (actionPhaseFlag)
                     teamWonRound(plugin.getGameManager().getTeamManager().getDefenders());
                  else
-                    nextRound();
+                    nextPhase();
             }
         };
 
-        nextRoundTask.runTaskLater(plugin, ticks);
+        nextPhaseTask.runTaskLater(plugin, ticks);
     }
 
 }

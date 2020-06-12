@@ -1,6 +1,5 @@
-package devvy.me.minestrike.round;
+package devvy.me.minestrike.phase;
 
-import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.game.CSTeam;
 import devvy.me.minestrike.game.GameState;
 import devvy.me.minestrike.game.TeamType;
@@ -11,11 +10,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-public class ActionRound extends RoundBase {
+public class ActionPhase extends PhaseBase {
 
     private ExperienceTimer timer;
 
-    public ActionRound() {
+    public ActionPhase() {
         super();
     }
 
@@ -25,7 +24,7 @@ public class ActionRound extends RoundBase {
         plugin.getGameManager().setState(GameState.ROUND_IN_PROGRESS);
 
         for (Player player : Bukkit.getOnlinePlayers())
-            player.sendMessage(ChatColor.AQUA + "Starting Action Round...");
+            player.sendMessage(ChatColor.AQUA + "Starting Action Phase...");
 
         timer = new ExperienceTimer(plugin, type().DEFAULT_TICK_LENGTH);
         timer.startTimer();
@@ -35,7 +34,7 @@ public class ActionRound extends RoundBase {
     public void end() {
 
         for (Player player : Bukkit.getOnlinePlayers())
-            player.sendMessage(ChatColor.RED + "Ending Action Round...");
+            player.sendMessage(ChatColor.RED + "Ending Action Phase...");
 
         timer.endTimer();
     }
@@ -88,7 +87,7 @@ public class ActionRound extends RoundBase {
         // Should we end the round?
         if (victimsTeam.getNumMembersAlive() <= 0) {
             plugin.getGameManager().setState(calculateCurrentState());
-            plugin.getGameManager().getRoundManager().teamWonRound(plugin.getGameManager().getTeamManager().getOppositeTeam(victimsTeam));
+            plugin.getGameManager().getPhaseManager().teamWonRound(plugin.getGameManager().getTeamManager().getOppositeTeam(victimsTeam));
         }
 
         Bukkit.getServer().broadcastMessage(player.getDisplayName() + " died!");
@@ -96,13 +95,13 @@ public class ActionRound extends RoundBase {
     }
 
     @Override
-    public RoundType type() {
-        return RoundType.ACTION;
+    public PhaseType type() {
+        return PhaseType.ACTION;
     }
 
     @Override
-    public RoundType next() {
-        return RoundType.INTERMISSION;
+    public PhaseType next() {
+        return PhaseType.INTERMISSION;
     }
 
     private GameState calculateCurrentState() {

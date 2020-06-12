@@ -2,12 +2,11 @@ package devvy.me.minestrike.scoreboard;
 
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.game.CSTeam;
-import devvy.me.minestrike.game.GameManager;
 import devvy.me.minestrike.game.TeamManager;
-import devvy.me.minestrike.round.ActionRound;
-import devvy.me.minestrike.round.BuyRound;
-import devvy.me.minestrike.round.IntermissionRound;
-import devvy.me.minestrike.round.RoundType;
+import devvy.me.minestrike.phase.ActionPhase;
+import devvy.me.minestrike.phase.BuyPhase;
+import devvy.me.minestrike.phase.IntermissionPhase;
+import devvy.me.minestrike.phase.PhaseType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -128,17 +127,16 @@ public class Sidebar implements Listener {
 
         //pre-round, buy, action, planted, halftime = 15s, intermission = 7s
         Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
-        if (plugin.getGameManager().getRoundManager().getCurrentRound() == null){
+        if (plugin.getGameManager().getPhaseManager().getCurrentPhase() == null){
             return;
         }
 
-        if (plugin.getGameManager().getRoundManager().getCurrentRound().type() == RoundType.ACTION){
-            timeRemaining = ((ActionRound) plugin.getGameManager().getRoundManager().getCurrentRound()).getTimer().getSecondsLeft();
-
-        }else if (plugin.getGameManager().getRoundManager().getCurrentRound().type() == RoundType.BUY){
-            timeRemaining = ((BuyRound) plugin.getGameManager().getRoundManager().getCurrentRound()).getTimer().getSecondsLeft();
-        }else if (plugin.getGameManager().getRoundManager().getCurrentRound().type() == RoundType.INTERMISSION){
-            timeRemaining = ((IntermissionRound) plugin.getGameManager().getRoundManager().getCurrentRound()).getTimer().getSecondsLeft();
+        if (plugin.getGameManager().getPhaseManager().getCurrentPhase().type() == PhaseType.ACTION){
+            timeRemaining = ((ActionPhase) plugin.getGameManager().getPhaseManager().getCurrentPhase()).getTimer().getSecondsLeft();
+        }else if (plugin.getGameManager().getPhaseManager().getCurrentPhase().type() == PhaseType.BUY){
+            timeRemaining = ((BuyPhase) plugin.getGameManager().getPhaseManager().getCurrentPhase()).getTimer().getSecondsLeft();
+        }else if (plugin.getGameManager().getPhaseManager().getCurrentPhase().type() == PhaseType.INTERMISSION){
+            timeRemaining = ((IntermissionPhase) plugin.getGameManager().getPhaseManager().getCurrentPhase()).getTimer().getSecondsLeft();
         }else{
             timeRemaining = 69;
         }

@@ -6,7 +6,7 @@ import devvy.me.minestrike.scoreboard.Sidebar;
 import devvy.me.minestrike.player.CSPlayer;
 import devvy.me.minestrike.player.PlayerManager;
 import devvy.me.minestrike.Minestrike;
-import devvy.me.minestrike.round.RoundManager;
+import devvy.me.minestrike.phase.PhaseManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class GameManager implements Listener {
 
-    private final RoundManager roundManager;
+    private final PhaseManager phaseManager;
     private final TeamManager teamManager;
     private final PlayerManager playerManager;
     private final GlobalDamageManager globalDamageManager;
@@ -29,7 +29,7 @@ public class GameManager implements Listener {
 
         Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
 
-        roundManager = new RoundManager(plugin);
+        phaseManager = new PhaseManager(plugin);
         teamManager = new TeamManager();
         playerManager = new PlayerManager(plugin);
         globalDamageManager = new GlobalDamageManager();
@@ -53,8 +53,8 @@ public class GameManager implements Listener {
     }
 
 
-    public RoundManager getRoundManager() {
-        return roundManager;
+    public PhaseManager getPhaseManager() {
+        return phaseManager;
     }
 
     public TeamManager getTeamManager() {
@@ -86,19 +86,19 @@ public class GameManager implements Listener {
     }
 
     public void startGame(){
-        roundManager.startRoundLoop();
+        phaseManager.startPhaseLoop();
     }
 
-    public void nextRound(){
-        roundManager.nextRound();
+    public void nextPhase(){
+        phaseManager.nextPhase();
     }
 
     public void endGame(){
-        roundManager.endRoundLoop();
+        phaseManager.endPhaseLoop();
     }
 
     public boolean isGameRunning(){
-        return roundManager.getCurrentRound() != null;
+        return phaseManager.getCurrentPhase() != null;
     }
 
 
