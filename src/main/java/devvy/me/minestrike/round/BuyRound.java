@@ -1,5 +1,6 @@
 package devvy.me.minestrike.round;
 
+import devvy.me.minestrike.game.GameState;
 import devvy.me.minestrike.items.CustomItemType;
 import devvy.me.minestrike.player.CSPlayer;
 import devvy.me.minestrike.timers.ExperienceTimer;
@@ -21,6 +22,8 @@ public class BuyRound extends RoundBase {
         plugin.getGameManager().getTeamManager().getAttackers().getSpawn().teleportMembersToSpawnPoints();
         plugin.getGameManager().getTeamManager().getDefenders().getSpawn().teleportMembersToSpawnPoints();
 
+
+        plugin.getGameManager().setState(GameState.BUY_IN_PROGRESS);
 
         for (Player player : Bukkit.getOnlinePlayers())
             player.sendMessage(ChatColor.AQUA + "Starting Buy Round...");
@@ -55,7 +58,7 @@ public class BuyRound extends RoundBase {
 
     @Override
     public void handlePlayerDeath(Player player) {
-        throw new IllegalStateException("Players cannot die during the buy round!");
+        plugin.getLogger().warning(player.getName() + " died during the buy round. This shouldn't happen.");
     }
 
     @Override

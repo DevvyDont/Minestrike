@@ -16,6 +16,7 @@ public class CSTeam {
     private final TeamType type;
     private String name;
     private int roundsWon;
+    private int lossStreak;
     private Spawn spawn;
     //DEBUG
     private Vector defendersSpawnCoordinates = new Vector(3,64,-23);
@@ -66,6 +67,22 @@ public class CSTeam {
         roundsWon++;
     }
 
+    public int getLossStreak() {
+        return lossStreak;
+    }
+
+    public void resetLossStreak(){
+        lossStreak = 0;
+    }
+
+    public void incrimentLossStreak(){
+        lossStreak++;
+
+        //makes sure lossStreak doesnt get too high
+        if (lossStreak > 5)
+            lossStreak = 5;
+    }
+
     public boolean hasMember(CSPlayer player){
         return members.contains(player);
     }
@@ -105,6 +122,11 @@ public class CSTeam {
         for (CSPlayer player : getMembers())
             economy += player.getMoney();
         return economy;
+    }
+
+    public void addMoneyToAllMembers(int amount) {
+        for (CSPlayer member : members)
+            member.addMoney(amount);
     }
 
     public int size(){

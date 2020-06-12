@@ -42,6 +42,7 @@ public class CSPlayer {
 
     public void addMoney(int amount){
         money += amount;
+        spigotPlayer.sendMessage("you were just given $"+amount+" you now have $"+money);
     }
 
     public void resetStats(){

@@ -51,7 +51,7 @@ public class ExperienceTimer {
 
     }
 
-    private float getPercentTimeCompleted() {
+    public float getPercentTimeCompleted() {
         return (float) currentTick / TARGET_TICK;
     }
 

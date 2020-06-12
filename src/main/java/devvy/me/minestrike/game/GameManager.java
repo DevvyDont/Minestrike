@@ -19,6 +19,10 @@ public class GameManager implements Listener {
     private final PlayerManager playerManager;
     private Sidebar scoreboardManager;
 
+    private GameState state;
+
+    private int roundNumber = 1;
+
     public GameManager() {
 
         Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
@@ -27,6 +31,7 @@ public class GameManager implements Listener {
         teamManager = new TeamManager();
         playerManager = new PlayerManager(plugin);
         scoreboardManager = new Sidebar();
+        state = GameState.WAITING;
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         plugin.getServer().getPluginManager().registerEvents(teamManager, plugin);
@@ -55,6 +60,22 @@ public class GameManager implements Listener {
 
     public PlayerManager getPlayerManager() {
         return playerManager;
+    }
+
+    public GameState getState() {
+        return state;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    public void incrementRoundNumber(){
+        roundNumber++;
     }
 
     public void startGame(){
