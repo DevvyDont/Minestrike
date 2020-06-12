@@ -21,6 +21,8 @@ public class GameManager implements Listener {
 
     private GameState state;
 
+    private int roundNumber = 1;
+
     public GameManager() {
 
         Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
@@ -60,6 +62,14 @@ public class GameManager implements Listener {
 
     public void setState(GameState state) {
         this.state = state;
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    public void incrementRoundNumber(){
+        roundNumber++;
     }
 
     public void startGame(){

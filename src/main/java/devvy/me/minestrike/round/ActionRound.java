@@ -61,20 +61,23 @@ public class ActionRound extends RoundBase {
         //suicide. literally
         if (p == null){     //TODO: handle bomb explosion logic
             moneyToGive = 300; //to a random player on the enemy team
-            oppositeTeam.getRandomMember().addMoney(moneyToGive);
-            return;
-        }
+            CSPlayer randomPlayer = oppositeTeam.getRandomMember();
 
-        CSPlayer killerCSPlayer = plugin.getGameManager().getPlayerManager().getCSPlayer(p);
-        CSTeam killersTeam = plugin.getGameManager().getTeamManager().getPlayerTeam(killerCSPlayer);
+            if (randomPlayer != null)
+                oppositeTeam.getRandomMember().addMoney(moneyToGive);
 
-        //teamkill penalty
-        if (killersTeam == victimsTeam) {
-            moneyToGive = -300;
-            killerCSPlayer.addMoney(moneyToGive);
-            return;
+        }else{
+            CSPlayer killerCSPlayer = plugin.getGameManager().getPlayerManager().getCSPlayer(p);
+            CSTeam killersTeam = plugin.getGameManager().getTeamManager().getPlayerTeam(killerCSPlayer);
+
+            //teamkill penalty
+            if (killersTeam == victimsTeam) {
+                moneyToGive = -300;
+                killerCSPlayer.addMoney(moneyToGive);
+
+            }
+
         }
-        //Switch statement for various weapons?
 
         player.setGameMode(GameMode.SPECTATOR);
 

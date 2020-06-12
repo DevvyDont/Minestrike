@@ -15,7 +15,6 @@ public class RoundManager {
     private final Minestrike plugin;
     private RoundBase currentRound;
     private BukkitRunnable nextRoundTask;
-    private int roundNumber;
 
     public RoundManager(Minestrike plugin) {
         this.plugin = plugin;
@@ -46,111 +45,155 @@ public class RoundManager {
         nextRoundTask = null;
     }
 
+    public void teamLostRound(CSTeam team){
+
+        //checks if round 1 or 16
+        switch (plugin.getGameManager().getRoundNumber()){
+
+            case 1:
+            case 16:
+                team.incrimentLossStreak();
+
+                break;
+
+        }
+
+        //adds 1 to loss streak
+        team.incrimentLossStreak();
+        CSTeam oppositeTeam = plugin.getGameManager().getTeamManager().getOppositeTeam(team);
+
+        //we know 'team' lost the round
+        switch (team.getType()){
+
+            //case where defending team lost the round
+            case DEFENDERS:
+
+                switch (plugin.getGameManager().getState()){
+
+                    //case where defending team lost the round
+                    //team was eliminated or bomb went boom
+                    case TEAM_WAS_ELIMINATED:
+                    case BOMB_EXPLODED:
+
+                        //gives loss money
+                        team.addMoneyToAllMembers(900 + 500 * team.getLossStreak());
+
+                        break;
+
+                }
+
+                break;
+
+            //case where attacking team lost the round
+            case ATTACKERS:
+
+                switch (plugin.getGameManager().getState()){
+
+                    //case where attacking team lost the round
+                    //time ran out
+                    case TIME_RAN_OUT:
+                        for (CSPlayer player : team.getMembers()){
+
+                            if (!(player.isAlive()))
+                                player.addMoney(900 + 500 * team.getLossStreak());
+
+                        }
+
+                        break;
+
+
+                    //case where attacking team lost the round
+                    //team was eliminated
+                    case TEAM_WAS_ELIMINATED:
+
+                        //gives loss money
+                        team.addMoneyToAllMembers(900 + 500 * team.getLossStreak());
+
+                        break;
+
+                    //case where attacking team lost the round
+                    //bomb is defused
+                    case BOMB_IS_DEFUSED:
+
+                        //gives loss money
+                        team.addMoneyToAllMembers(1700 + 500 * team.getLossStreak());
+                }
+
+                break;
+
+        }
+
+    }
+
     public void teamWonRound(CSTeam team){
 
-        int moneyToGive;    // However much money you want to give
-        int tLosses;        //team losses
-        int ctLosses;
-        CSPlayer p = null;
+        //resets team loss streak
+        team.resetLossStreak();
+        CSTeam oppositeTeam = plugin.getGameManager().getTeamManager().getOppositeTeam(team);
+        teamLostRound(oppositeTeam);
 
-        //gives every player their money for the round
-        for (Player player : Bukkit.getOnlinePlayers()){
+        //we know 'team' won the round
+        switch (team.getType()){
 
-            //conversts player to CSPlayer
-            p = plugin.getGameManager().getPlayerManager().getCSPlayer(player);
-            CSTeam pTeam = plugin.getGameManager().getTeamManager().getPlayerTeam(p);
-            CSTeam oppositeTeam = plugin.getGameManager().getTeamManager().getOppositeTeam(pTeam);
+            //case where defending team won the round
+            case DEFENDERS:
 
-            //makes sure someone doesnt get LOADED
-            moneyToGive = 0;
+                switch (plugin.getGameManager().getState()){
 
-            //team money management
-            switch (team.getType()) {
+                    //case where defending team won the round
+                    //bomb was defused
+                    case BOMB_IS_DEFUSED:
 
-                //t side money management
-                case ATTACKERS:
+                        //gives loss money
+                        team.addMoneyToAllMembers(3500);
 
-                    //TODO: win by eliminating money managing
-                    if (oppositeTeam.getNumMembersAlive() == 0) {
-                        moneyToGive = moneyToGive + 3250;
-                        tLosses = 0;
-                    }
+                        break;
 
-                    //TODO: win by bomb exploding money managing
-                    /*
-                    if ( round is won by bomb exploding ) {
-                        moneyToGive = moneyToGive + 3500;
-                        tLosses = 0;
-                    }
-                    */
 
-                    //TODO: T side round loss
-                    /*
-                    if ( round is lost ) {
-                        //adds 1 loss to t side
-                        tLosses = tLosses + 1;      //TODO: max loss counter at 5
+                    //case where defending team won
+                    //Ts eliminated, or time ran out
+                    case TIME_RAN_OUT:
+                    case TEAM_WAS_ELIMINATED:
 
-                        //t side money calculated for losing.. imagine losing lol
-                        //TODO: make sure living terrorists don't get any of this cash money
-                        moneyToGive = moneyToGive + 900 + 500 * tLosses;
+                        //gives loss money
+                        team.addMoneyToAllMembers(3250);
 
-                        //TODO: if bomb is planted add 800
-                        //player lives and bomb is not planted
-                        if (player is alive and no bomb was planted)
-                            moneyToGive = 0;
-                    }
-                    */
-                    //done with t-side
-                    break;
+                        break;
 
-                case DEFENDERS:
+                }
 
-                    //TODO: win by eliminating money managing
-                    if (oppositeTeam.getNumMembersAlive() == 0) {
-                        moneyToGive = moneyToGive + 3250;
-                        ctLosses = 0;
-                    }
+                break;
 
-                    //TODO: win by defusing bomb money managing
-                    /*
-                    if ( bomb is defused ) {
-                        moneyToGive = moneyToGive + 3500;   //to the team
-                        moneyToGive = moneyToGive + 300;    //to the player
-                        ctLosses = 0;
-                    }
-                    */
+            //case where attacking team won the round
+            case ATTACKERS:
 
-                    //TODO: Win by running out of time
-                    /*
-                    if ( time runs out ) {
-                        moneyToGive = moneyToGive + 3250;
-                        ctLosses = 0;
-                    }
-                    */
+                switch (plugin.getGameManager().getState()){
 
-                    //TODO: CT side round loss
-                    /*
-                    if ( round is lost ) {
-                        //adds 1 loss to t side
-                        ctLosses = ctLosses + 1;    //TODO: max loss counter at 5
+                    //case where attacking team won
+                    //CTs eliminated
+                    case TEAM_WAS_ELIMINATED:
 
-                        //ct side money calculated for losing
-                        moneyToGive = moneyToGive + 900 + 500 * ctLosses;
-                    }
-                    */
-                    //done with T side
-                    break;
+                        //gives loss money
+                        team.addMoneyToAllMembers(3500);
 
-            }
+                    //case where defending team won
+                    //bomb exploded
+                    case BOMB_EXPLODED:
 
-            //pays the player
-            p.addMoney(moneyToGive);
+                        //gives loss money
+                        team.addMoneyToAllMembers(3250);
 
+                        break;
+                }
+
+                break;
         }
 
         team.addRoundWin();
         Bukkit.broadcastMessage(ChatColor.GRAY + team.getName() + " won the round!");
         nextRound();
+
+        plugin.getGameManager().incrementRoundNumber();
     }
 
     public void nextRound(){
@@ -163,7 +206,7 @@ public class RoundManager {
         currentRound.end();
 
         try {
-            currentRound = currentRound.next().CLAZZ.getConstructor(Minestrike.class).newInstance(plugin);
+            currentRound = currentRound.next().CLAZZ.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException exception){
             exception.printStackTrace();
             Bukkit.getLogger().warning("Failed to create new round. Ending the game...");
