@@ -52,7 +52,7 @@ public class BuyRound extends RoundBase {
 
     @Override
     public void handlePlayerDeath(Player player) {
-        throw new IllegalStateException("Players cannot die during the buy round!");
+        plugin.getLogger().warning(player.getName() + " died during the buy round. This shouldn't happen.");
     }
 
     @Override
