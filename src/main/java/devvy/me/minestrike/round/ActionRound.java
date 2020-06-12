@@ -1,6 +1,8 @@
 package devvy.me.minestrike.round;
 
+import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.game.CSTeam;
+import devvy.me.minestrike.game.GameState;
 import devvy.me.minestrike.game.TeamType;
 import devvy.me.minestrike.player.CSPlayer;
 import devvy.me.minestrike.timers.ExperienceTimer;
@@ -20,6 +22,8 @@ public class ActionRound extends RoundBase {
     @Override
     public void start() {
 
+        plugin.getGameManager().setState(GameState.ROUND_IN_PROGRESS);
+
         for (Player player : Bukkit.getOnlinePlayers())
             player.sendMessage(ChatColor.AQUA + "Starting Action Round...");
 
@@ -34,7 +38,6 @@ public class ActionRound extends RoundBase {
             player.sendMessage(ChatColor.RED + "Ending Action Round...");
 
         timer.endTimer();
-
     }
 
     @Override
@@ -76,8 +79,10 @@ public class ActionRound extends RoundBase {
         player.setGameMode(GameMode.SPECTATOR);
 
         // Should we end the round?
-        if (victimsTeam.getNumMembersAlive() <= 0)
+        if (victimsTeam.getNumMembersAlive() <= 0) {
+            plugin.getGameManager().setState(calculateCurrentState());
             plugin.getGameManager().getRoundManager().teamWonRound(plugin.getGameManager().getTeamManager().getOppositeTeam(victimsTeam));
+        }
 
         Bukkit.getServer().broadcastMessage(player.getDisplayName() + " died!");
 
@@ -91,5 +96,26 @@ public class ActionRound extends RoundBase {
     @Override
     public RoundType next() {
         return RoundType.INTERMISSION;
+    }
+
+    private GameState calculateCurrentState() {
+
+        CSTeam attackers = plugin.getGameManager().getTeamManager().getAttackers();
+        CSTeam defenders = plugin.getGameManager().getTeamManager().getDefenders();
+
+
+        // TODO: Analyze bomb plant status
+
+        // is everyone dead on a team?
+        if (attackers.getNumMembersAlive() == 0 || defenders.getNumMembersAlive() == 0)
+            return GameState.TEAM_WAS_ELIMINATED;
+        // Did the time run out?
+        else if (timer.getPercentTimeCompleted() >= 1.0) {
+            return GameState.TIME_RAN_OUT;
+        }
+
+        // Round is still running
+        return GameState.ROUND_IN_PROGRESS;
+
     }
 }
