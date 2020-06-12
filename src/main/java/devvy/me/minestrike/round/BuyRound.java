@@ -18,6 +18,9 @@ public class BuyRound extends RoundBase {
 
     @Override
     public void start() {
+        plugin.getGameManager().getTeamManager().getAttackers().getSpawn().teleportMembersToSpawnPoints();
+        plugin.getGameManager().getTeamManager().getDefenders().getSpawn().teleportMembersToSpawnPoints();
+
 
         for (Player player : Bukkit.getOnlinePlayers())
             player.sendMessage(ChatColor.AQUA + "Starting Buy Round...");
@@ -64,4 +67,8 @@ public class BuyRound extends RoundBase {
     public RoundType next() {
         return RoundType.ACTION;
     }
+    public ExperienceTimer getTimer() {
+        return timer;
+    }
+
 }

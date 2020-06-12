@@ -1,7 +1,13 @@
 package devvy.me.minestrike.scoreboard;
 
 import devvy.me.minestrike.Minestrike;
+import devvy.me.minestrike.game.CSTeam;
+import devvy.me.minestrike.game.GameManager;
 import devvy.me.minestrike.game.TeamManager;
+import devvy.me.minestrike.round.ActionRound;
+import devvy.me.minestrike.round.BuyRound;
+import devvy.me.minestrike.round.IntermissionRound;
+import devvy.me.minestrike.round.RoundType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -24,8 +30,14 @@ public class Sidebar implements Listener {
     private final Team t;
     private final Team ct;
     private final Team spec;
+    private CSTeam defenderWins;
+    private CSTeam attackerWins;
+    private int tsAlive = 0;
+    private int ctsAlive = 0;
+    private int timeRemaining = 0;
 
     public Sidebar() {
+
 
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         mainScoreboard = manager.getNewScoreboard();
@@ -38,6 +50,7 @@ public class Sidebar implements Listener {
         scoreLabelLine = mainScoreboard.registerNewTeam("scoreLabelLine");
         actualScoreLine = mainScoreboard.registerNewTeam("actualScoreLine");
         Score blankLine3 = mainScoreboardObjective.getScore("   ");
+        Score blankLine4 = mainScoreboardObjective.getScore("    ");
         timeRemLine = mainScoreboard.registerNewTeam("timeRemLine");
 
         blankLine1.setScore(14);
@@ -54,9 +67,10 @@ public class Sidebar implements Listener {
         mainScoreboardObjective.getScore(ChatColor.BLUE.toString()).setScore(10);
 
         blankLine3.setScore(9);
+        blankLine4.setScore(8);
 
         timeRemLine.addEntry(ChatColor.GRAY.toString());
-        mainScoreboardObjective.getScore(ChatColor.GRAY.toString()).setScore(8);
+        mainScoreboardObjective.getScore(ChatColor.GRAY.toString()).setScore(7);
 
         t = mainScoreboard.registerNewTeam("Terrorists");
         t.setPrefix(ChatColor.GOLD + "[T] " + ChatColor.RED);
@@ -84,6 +98,7 @@ public class Sidebar implements Listener {
             @Override
             public void run() {
                 updateScoreboard();
+                timeLeft();
             }
 
         }.runTaskTimer(plugin, 0, 20);
@@ -109,22 +124,46 @@ public class Sidebar implements Listener {
         updatePlayerClanTag(event.getPlayer());
     }
 
-    public void updateScoreboard() {
 
+    public void timeLeft(){
+
+        //pre-round, buy, action, planted, halftime = 15s, intermission = 7s
+        Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
+        if (plugin.getGameManager().getRoundManager().getCurrentRound() == null){
+            return;
+        }
+
+        if (plugin.getGameManager().getRoundManager().getCurrentRound().type() == RoundType.ACTION){
+            timeRemaining = ((ActionRound) plugin.getGameManager().getRoundManager().getCurrentRound()).getTimer().getSecondsLeft();
+
+        }else if (plugin.getGameManager().getRoundManager().getCurrentRound().type() == RoundType.BUY){
+            timeRemaining = ((BuyRound) plugin.getGameManager().getRoundManager().getCurrentRound()).getTimer().getSecondsLeft();
+        }else if (plugin.getGameManager().getRoundManager().getCurrentRound().type() == RoundType.INTERMISSION){
+            timeRemaining = ((IntermissionRound) plugin.getGameManager().getRoundManager().getCurrentRound()).getTimer().getSecondsLeft();
+        }else{
+            timeRemaining = 69;
+        }
+    }
+
+
+    public void updateScoreboard() {
+        timeLeft();
+
+        Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
         // TODO: implement these variables
-        String mapName = "not implemented";
-        int ctScore = 0;
-        int tScore = 0;
-        int timeRemaining = 0;
-        int ctsAlive = 5;
-        int tsAlive = 5;
+        String mapName = "Ram Ranch";
+        int ctScore = plugin.getGameManager().getTeamManager().getDefenders().getRoundsWon();
+        int tScore = plugin.getGameManager().getTeamManager().getAttackers().getRoundsWon();
+
+        ctsAlive = plugin.getGameManager().getTeamManager().getDefenders().getNumMembersAlive();
+        tsAlive = plugin.getGameManager().getTeamManager().getAttackers().getNumMembersAlive();
 
         mapLine.setPrefix("Current Map: ");
         mapLine.setSuffix(mapName);
-        scoreLabelLine.setPrefix(ChatColor.YELLOW + "      - Score -      ");
-        actualScoreLine.setPrefix(String.format("    %s%d %s- %s%d    ", ChatColor.AQUA, ctScore, ChatColor.GRAY, ChatColor.RED, tScore));
-        timeRemLine.setPrefix(String.format(ChatColor.RED + "%ds ", timeRemaining));
-        timeRemLine.setSuffix(String.format(ChatColor.GRAY + "[%s%d %sv %s%d]", ChatColor.AQUA, ctsAlive, ChatColor.WHITE, ChatColor.RED, tsAlive));
+        scoreLabelLine.setPrefix(ChatColor.YELLOW + "            ✖ Score ✖      ");
+        actualScoreLine.setPrefix(String.format("               %s%d -%s- %s%d    ", ChatColor.AQUA, ctScore, ChatColor.RED, ChatColor.RED, tScore));
+        timeRemLine.setSuffix(String.format(ChatColor.GREEN + "    %ds ", timeRemaining));
+        timeRemLine.setPrefix(String.format(ChatColor.AQUA + "            ♠ [%s%d %s✗ %s%d] ♦", ChatColor.AQUA, ctsAlive, ChatColor.WHITE, ChatColor.RED, tsAlive));
 
     }
 

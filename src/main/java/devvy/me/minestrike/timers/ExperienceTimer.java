@@ -55,7 +55,7 @@ public class ExperienceTimer {
         return (float) currentTick / TARGET_TICK;
     }
 
-    private int getSecondsLeft() {
+    public int getSecondsLeft() {
         int totalSeconds = Math.round((float) TARGET_TICK / 20);
         int currentSecond = Math.round((float)currentTick / 20);
         return totalSeconds - currentSecond;

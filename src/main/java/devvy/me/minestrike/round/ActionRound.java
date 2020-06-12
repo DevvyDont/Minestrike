@@ -37,6 +37,10 @@ public class ActionRound extends RoundBase {
 
     }
 
+    public ExperienceTimer getTimer() {
+        return timer;
+    }
+
     @Override
     public void handlePlayerDeath(Player player) {
 

@@ -1,7 +1,11 @@
 package devvy.me.minestrike.game;
 
+import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.player.CSPlayer;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.util.Vector;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,14 +16,29 @@ public class CSTeam {
     private final TeamType type;
     private String name;
     private int roundsWon;
+    private Spawn spawn;
+    //DEBUG
+    private Vector defendersSpawnCoordinates = new Vector(3,64,-23);
+    private Vector attackersSpawnCoordinates = new Vector(3,64,23);
 
     public CSTeam(TeamType type, String name) {
+        Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
 
         members = new ArrayList<>();
 
         this.type = type;
         this.name = name;
         roundsWon = 0;
+
+
+
+        //DEBUG
+        if (type == TeamType.ATTACKERS){
+            this.spawn = new Spawn(new Location(plugin.getGameWorld(), attackersSpawnCoordinates.getX(),attackersSpawnCoordinates.getY(), attackersSpawnCoordinates.getZ()), this);
+            this.spawn.setModifier(-1);
+        }else{
+            this.spawn = new Spawn(new Location(plugin.getGameWorld(), defendersSpawnCoordinates.getX(),defendersSpawnCoordinates.getY(), defendersSpawnCoordinates.getZ()), this);
+        }
 
     }
 
@@ -67,7 +86,6 @@ public class CSTeam {
     public Collection<CSPlayer> getMembers(){
         return members;
     }
-
     public CSPlayer getRandomMember() {
         if (members.isEmpty())
             return null;
@@ -108,5 +126,9 @@ public class CSTeam {
             sb.append(p.getSpigotPlayer().getName()).append(", ");
 
         return sb.substring(0, sb.length() - 2);
+    }
+
+    public Spawn getSpawn() {
+        return spawn;
     }
 }

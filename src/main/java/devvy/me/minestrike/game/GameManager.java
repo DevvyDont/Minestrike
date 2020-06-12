@@ -17,7 +17,7 @@ public class GameManager implements Listener {
     private final RoundManager roundManager;
     private final TeamManager teamManager;
     private final PlayerManager playerManager;
-    private final Sidebar scoreboardManager;
+    private Sidebar scoreboardManager;
 
     public GameManager() {
 
@@ -34,10 +34,16 @@ public class GameManager implements Listener {
         plugin.getServer().getPluginManager().registerEvents(scoreboardManager, plugin);
     }
     public void initializeTabList(){
+        Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
+        scoreboardManager = new Sidebar();
         for(Player player: Bukkit.getOnlinePlayers()){
             scoreboardManager.updatePlayerClanTag(player);
         }
+
+        plugin.getServer().getPluginManager().registerEvents(scoreboardManager, plugin);
+
     }
+
 
     public RoundManager getRoundManager() {
         return roundManager;

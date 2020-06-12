@@ -2,6 +2,7 @@ package devvy.me.minestrike;
 import devvy.me.minestrike.commands.AdminCommand;
 import devvy.me.minestrike.game.GameManager;
 import devvy.me.minestrike.items.CustomItemManager;
+import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Minestrike extends JavaPlugin  {
@@ -38,6 +39,9 @@ public final class Minestrike extends JavaPlugin  {
         // Some scoreboard/teams stuff relies on the entire manager to be generated so this has to be outside the constructor
         gameManager.initializeTabList();
 
+    }
+    public World getGameWorld(){
+        return getServer().getWorld("world");
     }
 
     private void initializeCommands() {
