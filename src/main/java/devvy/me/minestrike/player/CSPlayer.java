@@ -1,6 +1,7 @@
 package devvy.me.minestrike.player;
 
 import devvy.me.minestrike.game.PlayerKDTracker;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 public class CSPlayer {
@@ -22,6 +23,10 @@ public class CSPlayer {
 
     public void setSpigotPlayer(Player spigotPlayer) {
         this.spigotPlayer = spigotPlayer;
+    }
+
+    public boolean isAlive() {
+        return spigotPlayer.isValid() && (spigotPlayer.getGameMode() == GameMode.SURVIVAL || spigotPlayer.getGameMode() == GameMode.ADVENTURE);
     }
 
     public int getMoney() {

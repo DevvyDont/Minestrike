@@ -77,7 +77,7 @@ public class CSTeam {
     public int getNumMembersAlive(){
         int alive = 0;
         for (CSPlayer player : getMembers())
-            if (player.getSpigotPlayer().isValid() && (player.getSpigotPlayer().getGameMode() == GameMode.SURVIVAL || player.getSpigotPlayer().getGameMode() == GameMode.ADVENTURE))
+            if (player.isAlive())
                 alive++;
         return alive;
     }
