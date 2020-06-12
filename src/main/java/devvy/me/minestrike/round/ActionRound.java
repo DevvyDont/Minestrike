@@ -49,6 +49,30 @@ public class ActionRound extends RoundBase {
         if (victimsTeam.getType() == TeamType.SPECTATORS)
             return;
 
+        CSTeam oppositeTeam = plugin.getGameManager().getTeamManager().getOppositeTeam(victimsTeam);
+
+        //finds who killed the player
+        Player p = player.getKiller();   //why is p an error?
+        int moneyToGive;
+
+        //suicide. literally
+        if (p == null){     //TODO: handle bomb explosion logic
+            moneyToGive = 300; //to a random player on the enemy team
+            oppositeTeam.getRandomMember().addMoney(moneyToGive);
+            return;
+        }
+
+        CSPlayer killerCSPlayer = plugin.getGameManager().getPlayerManager().getCSPlayer(p);
+        CSTeam killersTeam = plugin.getGameManager().getTeamManager().getPlayerTeam(killerCSPlayer);
+
+        //teamkill penalty
+        if (killersTeam == victimsTeam) {
+            moneyToGive = -300;
+            killerCSPlayer.addMoney(moneyToGive);
+            return;
+        }
+        //Switch statement for various weapons?
+
         player.setGameMode(GameMode.SPECTATOR);
 
         // Should we end the round?
