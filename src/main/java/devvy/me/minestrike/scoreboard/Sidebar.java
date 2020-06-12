@@ -98,10 +98,9 @@ public class Sidebar implements Listener {
             @Override
             public void run() {
                 updateScoreboard();
-                timeLeft();
             }
 
-        }.runTaskTimer(plugin, 0, 20);
+        }.runTaskTimer(plugin, 0, 5);
     }
 
     public void updatePlayerClanTag(Player player){
