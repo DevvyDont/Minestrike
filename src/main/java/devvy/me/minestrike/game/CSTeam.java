@@ -89,6 +89,11 @@ public class CSTeam {
         return economy;
     }
 
+    public void addMoneyToAllMembers(int amount) {
+        for (CSPlayer member : members)
+            member.addMoney(amount);
+    }
+
     public int size(){
         return members.size();
     }
