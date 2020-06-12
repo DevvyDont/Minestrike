@@ -59,7 +59,7 @@ public class RoundManager {
         currentRound.end();
 
         try {
-            currentRound = currentRound.next().CLAZZ.getConstructor(Minestrike.class).newInstance(plugin);
+            currentRound = currentRound.next().CLAZZ.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException exception){
             exception.printStackTrace();
             Bukkit.getLogger().warning("Failed to create new round. Ending the game...");
