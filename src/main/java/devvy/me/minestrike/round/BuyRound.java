@@ -1,5 +1,6 @@
 package devvy.me.minestrike.round;
 
+import devvy.me.minestrike.game.GameState;
 import devvy.me.minestrike.items.CustomItemType;
 import devvy.me.minestrike.player.CSPlayer;
 import devvy.me.minestrike.timers.ExperienceTimer;
@@ -18,6 +19,8 @@ public class BuyRound extends RoundBase {
 
     @Override
     public void start() {
+
+        plugin.getGameManager().setState(GameState.BUY_IN_PROGRESS);
 
         for (Player player : Bukkit.getOnlinePlayers())
             player.sendMessage(ChatColor.AQUA + "Starting Buy Round...");

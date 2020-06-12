@@ -12,6 +12,7 @@ public class CSTeam {
     private final TeamType type;
     private String name;
     private int roundsWon;
+    private int lossStreak;
 
     public CSTeam(TeamType type, String name) {
 
@@ -45,6 +46,22 @@ public class CSTeam {
 
     public void addRoundWin(){
         roundsWon++;
+    }
+
+    public int getLossStreak() {
+        return lossStreak;
+    }
+
+    public void resetLossStreak(){
+        lossStreak = 0;
+    }
+
+    public void incrimentLossStreak(){
+        lossStreak++;
+
+        //makes sure lossStreak doesnt get too high
+        if (lossStreak > 5)
+            lossStreak = 5;
     }
 
     public boolean hasMember(CSPlayer player){
@@ -87,6 +104,11 @@ public class CSTeam {
         for (CSPlayer player : getMembers())
             economy += player.getMoney();
         return economy;
+    }
+
+    public void addMoneyToAllMembers(int amount) {
+        for (CSPlayer member : members)
+            member.addMoney(amount);
     }
 
     public int size(){
