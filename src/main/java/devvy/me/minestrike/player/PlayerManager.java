@@ -51,17 +51,13 @@ public class PlayerManager implements Listener {
             csPlayer.setSpigotPlayer(event.getPlayer());
         }
 
-        //checks max HP of player
-        if (event.getPlayer().getMaxHealth() == 100)
-            return;
-
         //creates variable for the player
         Player p = event.getPlayer();
 
         //sets max HP to 100, and displays it as 10 hearts instead of 50
+        //displayedHealth = getHealth() / getMaxHealth() * getHealthScale()
         p.setMaxHealth(100);
         p.setHealth(100);
-        //TODO: make this actually work vv
         p.setHealthScaled(true);    // Makes sure the client is displaying the health scale just in case
         p.setHealthScale(20);       // Forces the client to display their health as if they had 20HP
 
