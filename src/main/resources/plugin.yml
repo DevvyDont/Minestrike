@@ -7,4 +7,4 @@ commands:
   admin:
     permission: op
     description: Used to force control of game flow (or print out game details)
-    usage: /admin < start | end | next | status >
+    usage: /admin < start | end | next | status | swap | spectate | give >

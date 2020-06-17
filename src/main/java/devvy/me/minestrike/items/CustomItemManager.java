@@ -60,7 +60,16 @@ public class CustomItemManager {
         return getCustomItemType(item) == type;
     }
 
+    /**
+     * Gives the type of custom item the given item stack is, if it isn't a custom item, returns null
+     *
+     * @param item The itemstack you want to test for custom item status
+     * @return The custom item type, null if not custom
+     */
     public CustomItemType getCustomItemType(ItemStack item) {
+
+        if (item.getItemMeta() == null)
+            return null;
 
         Integer itemID = item.getItemMeta().getPersistentDataContainer().get(CUSTOM_ITEM_KEY, PersistentDataType.INTEGER);
         if (itemID == null)

@@ -1,8 +1,11 @@
 package devvy.me.minestrike.commands;
 
+import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.game.CSTeam;
 import devvy.me.minestrike.game.GameManager;
 import devvy.me.minestrike.game.TeamType;
+import devvy.me.minestrike.items.CustomItem;
+import devvy.me.minestrike.items.CustomItemType;
 import devvy.me.minestrike.player.CSPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -27,21 +30,44 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        String[] subs = {"start", "end", "next", "status", "swap", "spectate"};
+
+        String[] subs = {"start", "end", "next", "status", "swap", "spectate", "give"};
+
         if (command.getName().equalsIgnoreCase("admin")){
+
             if (args.length == 1){
                 ArrayList<String> options = new ArrayList<>();
 
                 if (!args[0].equalsIgnoreCase("")){
+
                     for (String sub : subs) {
                         if (sub.startsWith(args[0]))
                             options.add(sub);
                     }
+
                     Collections.sort(options);
                     return options;
 
                 } else
                     return Arrays.asList(subs);
+
+            } else if (args.length == 2 && args[0].equalsIgnoreCase("give")) {
+
+                ArrayList<String> options = new ArrayList<>();
+
+                if (args[1].equalsIgnoreCase("")) {
+                    for (CustomItemType type : CustomItemType.values())
+                        options.add(type.toString());
+                    return options;
+                }
+
+                for (CustomItemType type : CustomItemType.values()) {
+                    if (type.toString().startsWith(args[1]))
+                        options.add(type.toString());
+                }
+
+                Collections.sort(options);
+                return options;
             }
         }
         return null;
@@ -92,12 +118,44 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
                 handleStatusSubcommand(sender);
                 break;
 
+            case "GIVE":
+                if (args.length < 2) {
+                    sender.sendMessage(ChatColor.RED + "Please provide what item you would like to give yourself!");
+                    return true;
+                }
+
+                if (!(sender instanceof Player)){
+                    sender.sendMessage(ChatColor.RED + "Only players can use this command!");
+                    return true;
+                }
+
+                String itemName = args[1].toUpperCase();
+                handleGiveSubcommand((Player)sender, itemName);
+                break;
+
             default:
                 sender.sendMessage(ChatColor.RED + "Unknown argument " + ChatColor.DARK_RED + args[0]);
                 return false;
         }
 
         return true;
+
+    }
+
+    private void handleGiveSubcommand(Player player, String itemName) {
+
+
+        CustomItemType type;
+
+        try {
+            type = CustomItemType.valueOf(itemName.toUpperCase().replace(" ", ""));
+        } catch (IllegalArgumentException ignored) {
+            player.sendMessage(ChatColor.RED + "Invalid custom item type! Please try again!");
+            return;
+        }
+
+        player.getInventory().addItem(Minestrike.getPlugin(Minestrike.class).getCustomItemManager().getCustomItemStack(type));
+        player.sendMessage(ChatColor.GREEN + "Gave you the custom item: " + ChatColor.AQUA + type + ChatColor.GREEN + "!");
 
     }
 
