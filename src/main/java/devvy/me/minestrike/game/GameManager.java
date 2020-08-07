@@ -8,10 +8,16 @@ import devvy.me.minestrike.player.PlayerManager;
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.phase.PhaseManager;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameManager implements Listener {
 
@@ -22,6 +28,8 @@ public class GameManager implements Listener {
     private Sidebar scoreboardManager;
 
     private GameState state;
+
+    private List<BombBlock> bombs;
 
     private int roundNumber = 1;
 
@@ -34,6 +42,14 @@ public class GameManager implements Listener {
         playerManager = new PlayerManager(plugin);
         globalDamageManager = new GlobalDamageManager();
         state = GameState.WAITING;
+
+
+        bombs = new ArrayList<>();
+        // Construct the bomb objects
+        bombs.add(new BombBlock(new Location(plugin.getGameWorld(), 26, 64, -18)));
+        bombs.add(new BombBlock(new Location(plugin.getGameWorld(), -21, 64, -2)));
+        // Generate them into default state
+        bombs.forEach(BombBlock::generate);
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         plugin.getServer().getPluginManager().registerEvents(teamManager, plugin);
@@ -77,6 +93,10 @@ public class GameManager implements Listener {
         this.state = state;
     }
 
+    public List<BombBlock> getBombs() {
+        return bombs;
+    }
+
     public int getRoundNumber() {
         return roundNumber;
     }
@@ -101,6 +121,10 @@ public class GameManager implements Listener {
         return phaseManager.getCurrentPhase() != null;
     }
 
+    public void cleanup() {
+        bombs.forEach(BombBlock::destroy);
+    }
+
 
     /**************************************************************************************
     EVENTS TO HANDLE
@@ -123,6 +147,27 @@ public class GameManager implements Listener {
             } else {
                 teamManager.getAttackers().addMember(player);
                 System.out.println("t " + teamManager.getAttackers());
+            }
+        }
+
+    }
+
+    @EventHandler
+    public void onPlayerInteractedWithBomb(PlayerInteractEvent event) {
+
+        // Only listen to right click block events
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
+            return;
+
+        if (event.getClickedBlock() == null)
+            return;
+
+        for (BombBlock bombBlock : bombs) {
+
+            if (bombBlock.getLocation().toBlockLocation().equals(event.getClickedBlock().getLocation().toBlockLocation())) {
+
+                if (bombBlock.getState() == BombBlock.BombState.IDLE)
+                    bombBlock.plant(event.getPlayer());
             }
         }
 

@@ -1,5 +1,6 @@
 package devvy.me.minestrike.phase;
 
+import devvy.me.minestrike.game.BombBlock;
 import devvy.me.minestrike.game.GameState;
 import devvy.me.minestrike.items.CustomItemType;
 import devvy.me.minestrike.player.CSPlayer;
@@ -44,6 +45,7 @@ public class BuyPhase extends PhaseBase {
         if (randomAttacker != null)
             randomAttacker.getSpigotPlayer().getInventory().addItem(plugin.getCustomItemManager().getCustomItemStack(CustomItemType.BOMB));
 
+        plugin.getGameManager().getBombs().forEach(BombBlock::reset);
     }
 
     @Override

@@ -240,4 +240,11 @@ public class PhaseManager {
         nextPhaseTask.runTaskLater(plugin, ticks);
     }
 
+    /**
+     * Called if for whatever reason we need to end the game timer, planting bombs needs to call this
+     */
+    public void endPhaseTimer() {
+        nextPhaseTask.cancel();
+    }
+
 }
