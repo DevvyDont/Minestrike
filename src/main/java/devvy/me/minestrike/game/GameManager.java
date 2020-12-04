@@ -1,6 +1,7 @@
 package devvy.me.minestrike.game;
 
 
+import devvy.me.minestrike.GUI.BuyMenu;
 import devvy.me.minestrike.items.GlobalDamageManager;
 import devvy.me.minestrike.scoreboard.Sidebar;
 import devvy.me.minestrike.player.CSPlayer;
@@ -19,6 +20,7 @@ public class GameManager implements Listener {
     private final TeamManager teamManager;
     private final PlayerManager playerManager;
     private final GlobalDamageManager globalDamageManager;
+    private final BuyMenu buyMenu;
     private Sidebar scoreboardManager;
 
     private GameState state;
@@ -34,11 +36,13 @@ public class GameManager implements Listener {
         playerManager = new PlayerManager(plugin);
         globalDamageManager = new GlobalDamageManager();
         state = GameState.WAITING;
+        buyMenu = new BuyMenu();
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         plugin.getServer().getPluginManager().registerEvents(teamManager, plugin);
         plugin.getServer().getPluginManager().registerEvents(playerManager, plugin);
         plugin.getServer().getPluginManager().registerEvents(globalDamageManager, plugin);
+        plugin.getServer().getPluginManager().registerEvents(buyMenu, plugin);
     }
 
     public void initializeTabList(){
