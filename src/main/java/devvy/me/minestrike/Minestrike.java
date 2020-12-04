@@ -28,7 +28,7 @@ public final class Minestrike extends JavaPlugin  {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        gameManager.cleanup();
     }
 
     private void initializeManagers() {
