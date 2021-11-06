@@ -8,7 +8,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class BombBlock {
+public class BombSite {
 
     public enum BombState {
         HIDDEN,
@@ -61,7 +61,7 @@ public class BombBlock {
     private CSPlayer defuser;
 
 
-    public BombBlock(Location location) {
+    public BombSite(Location location) {
         this.plugin = Minestrike.getPlugin(Minestrike.class);
         this.location = location;
         this.text = location.getWorld().spawn(location, ArmorStand.class);

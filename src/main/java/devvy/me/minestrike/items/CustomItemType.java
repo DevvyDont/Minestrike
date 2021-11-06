@@ -6,7 +6,7 @@ public enum CustomItemType {
 
     SCOUT(CustomItemScout.class, Material.CROSSBOW, CustomItemCategory.RANGED,    71, 0),
     DEBUG_SWORD(CustomItemDebugSword.class, Material.GOLDEN_SWORD, CustomItemCategory.MELEE,    69, 0),
-    BOMB(CustomItemBomb.class,   Material.ZOMBIE_HEAD, CustomItemCategory.UTILITY,0,  0);
+    BOMB(CustomItemBomb.class,   Material.TNT, CustomItemCategory.UTILITY,0,  0);
 
     public final Class<? extends CustomItem> CLAZZ;
     public final Material MATERIAL;

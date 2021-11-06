@@ -31,7 +31,7 @@ public class GameManager implements Listener {
 
     private GameState state;
 
-    private List<BombBlock> bombs;
+    private List<BombSite> bombs;
 
     private int roundNumber = 1;
 
@@ -49,10 +49,10 @@ public class GameManager implements Listener {
 
         bombs = new ArrayList<>();
         // Construct the bomb objects
-        bombs.add(new BombBlock(new Location(plugin.getGameWorld(), 26, 64, -18)));
-        bombs.add(new BombBlock(new Location(plugin.getGameWorld(), -21, 64, -2)));
+        bombs.add(new BombSite(new Location(plugin.getGameWorld(), 26, 64, -18)));
+        bombs.add(new BombSite(new Location(plugin.getGameWorld(), -21, 64, -2)));
         // Generate them into default state
-        bombs.forEach(BombBlock::generate);
+        bombs.forEach(BombSite::generate);
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         plugin.getServer().getPluginManager().registerEvents(teamManager, plugin);
@@ -97,7 +97,7 @@ public class GameManager implements Listener {
         this.state = state;
     }
 
-    public List<BombBlock> getBombs() {
+    public List<BombSite> getBombs() {
         return bombs;
     }
 
@@ -126,7 +126,7 @@ public class GameManager implements Listener {
     }
 
     public void cleanup() {
-        bombs.forEach(BombBlock::destroy);
+        bombs.forEach(BombSite::destroy);
     }
 
 
@@ -166,12 +166,12 @@ public class GameManager implements Listener {
         if (event.getClickedBlock() == null)
             return;
 
-        for (BombBlock bombBlock : bombs) {
+        for (BombSite bombSite : bombs) {
 
-            if (bombBlock.getLocation().toBlockLocation().equals(event.getClickedBlock().getLocation().toBlockLocation())) {
+            if (bombSite.getLocation().toBlockLocation().equals(event.getClickedBlock().getLocation().toBlockLocation())) {
 
-                if (bombBlock.getState() == BombBlock.BombState.IDLE)
-                    bombBlock.plant(event.getPlayer());
+                if (bombSite.getState() == BombSite.BombState.IDLE)
+                    bombSite.plant(event.getPlayer());
             }
         }
 

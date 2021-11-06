@@ -1,6 +1,6 @@
 package devvy.me.minestrike.phase;
 
-import devvy.me.minestrike.game.BombBlock;
+import devvy.me.minestrike.game.BombSite;
 import devvy.me.minestrike.timers.ExperienceTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,7 +31,7 @@ public class IntermissionPhase extends PhaseBase {
             player.sendMessage(ChatColor.RED + "Ending Intermission Phase...");
         timer.endTimer();
 
-        plugin.getGameManager().getBombs().forEach(BombBlock::hide);
+        plugin.getGameManager().getBombs().forEach(BombSite::hide);
 
     }
 

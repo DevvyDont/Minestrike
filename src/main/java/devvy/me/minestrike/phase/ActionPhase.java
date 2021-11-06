@@ -1,6 +1,6 @@
 package devvy.me.minestrike.phase;
 
-import devvy.me.minestrike.game.BombBlock;
+import devvy.me.minestrike.game.BombSite;
 import devvy.me.minestrike.game.CSTeam;
 import devvy.me.minestrike.game.GameState;
 import devvy.me.minestrike.game.TeamType;
@@ -30,7 +30,7 @@ public class ActionPhase extends PhaseBase {
         timer = new ExperienceTimer(plugin, type().DEFAULT_TICK_LENGTH);
         timer.startTimer();
 
-        plugin.getGameManager().getBombs().forEach(BombBlock::show);
+        plugin.getGameManager().getBombs().forEach(BombSite::show);
     }
 
     @Override
