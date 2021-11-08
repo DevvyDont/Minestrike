@@ -74,12 +74,12 @@ public class Sidebar implements Listener {
         t = mainScoreboard.registerNewTeam("Terrorists");
         t.setPrefix(ChatColor.GOLD + "[T] " + ChatColor.RED);
         t.setAllowFriendlyFire(false);
-        t.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);  // TODO: use Team#setOption() instead since what we have is deprecated, not sure how this new method functions atm
+        t.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
 
         ct = mainScoreboard.registerNewTeam("Defenders");
         ct.setPrefix(ChatColor.BLUE + "[CT] " + ChatColor.LIGHT_PURPLE);
         ct.setAllowFriendlyFire(false);
-        ct.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+        ct.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
 
         spec = mainScoreboard.registerNewTeam("Spectators");
         spec.setPrefix(ChatColor.GRAY + "[SPEC] " + ChatColor.WHITE);
