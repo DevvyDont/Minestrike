@@ -12,6 +12,7 @@ public class CustomItemScout extends CustomItem {
 
     public CustomItemScout(CustomItemType customItemType) {
         super(customItemType);
+
     }
 
     @Override
@@ -30,4 +31,6 @@ public class CustomItemScout extends CustomItem {
                 event.getPlayer().sendMessage("scout");
 
     }
+
+
 }

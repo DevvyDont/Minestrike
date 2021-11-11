@@ -2,6 +2,9 @@ package devvy.me.minestrike.items;
 
 import devvy.me.minestrike.Minestrike;
 import org.bukkit.NamespacedKey;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -9,13 +12,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomItemManager {
+public class CustomItemManager implements Listener {
+
 
     public static final NamespacedKey CUSTOM_ITEM_KEY = new NamespacedKey(Minestrike.getPlugin(Minestrike.class), "customitem");
 
     private final Map<CustomItemType, CustomItem> customItemMap;
 
     public CustomItemManager() {
+        Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
         customItemMap = new HashMap<>();
 
@@ -68,6 +74,14 @@ public class CustomItemManager {
      */
     public CustomItemType getCustomItemType(ItemStack item) {
 
+        if(item == null){
+            return null;
+        }
+
+        if(!item.hasItemMeta()){
+            return null;
+        }
+
         if (item.getItemMeta() == null)
             return null;
 
@@ -80,6 +94,21 @@ public class CustomItemManager {
 
         Minestrike.getPlugin(Minestrike.class).getLogger().warning("Tried to find custom item type " + itemID + " but was not in bounds of CustomItemType enum");
         return null;
+    }
+
+    @EventHandler
+    public void onSwitchItems(PlayerItemHeldEvent event){
+
+        int slot = event.getNewSlot();
+
+        ItemStack item = event.getPlayer().getInventory().getContents()[slot];
+        if (getCustomItemType(item) != null){
+            event.getPlayer().setWalkSpeed(getCustomItemType(item).SPEED);
+        }else{
+            event.getPlayer().setWalkSpeed(0.19982229f);
+        }
+
+
     }
 
 }

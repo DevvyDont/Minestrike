@@ -33,8 +33,8 @@ public final class Minestrike extends JavaPlugin  {
 
     private void initializeManagers() {
 
-        gameManager = new GameManager();
         customItemManager = new CustomItemManager();
+        gameManager = new GameManager();
 
         // Some scoreboard/teams stuff relies on the entire manager to be generated so this has to be outside the constructor
         gameManager.initializeTabList();

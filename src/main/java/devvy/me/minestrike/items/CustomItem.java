@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-public abstract class CustomItem implements Listener {
+public class CustomItem implements Listener {
 
     protected ItemStack itemStack;
     protected CustomItemType customItemType;
@@ -27,6 +27,18 @@ public abstract class CustomItem implements Listener {
         return item;
     }
 
-    public abstract void setupItemStack();
+    public void setupItemStack(){
+
+        String name = String.valueOf(customItemType);
+
+        itemStack = new ItemStack(customItemType.MATERIAL);
+        ItemMeta meta = itemStack.getItemMeta();
+
+        meta.setDisplayName(name);
+        itemStack.setItemMeta(meta);
+
+
+
+    }
 
 }

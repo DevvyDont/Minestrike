@@ -1,6 +1,8 @@
 package devvy.me.minestrike.GUI;
 
 import devvy.me.minestrike.Minestrike;
+import devvy.me.minestrike.items.CustomItemScout;
+import devvy.me.minestrike.items.CustomItemType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -11,17 +13,45 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.awt.*;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class BuyMenu implements Listener {
     private final Inventory inventory;
     Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
 
+    private HashMap<String, ItemStack> itemGuiMap = new HashMap();
+
+
     public BuyMenu() {
-        inventory = Bukkit.createInventory(null, 9, "BaseGUI");
+        inventory = Bukkit.createInventory(null, 9, "Buy Menu");
         InitializeBuyItems();
         System.out.println("buy gui");
 
+        initItemMap();
+
+    }
+
+    public void initItemMap() {
+        itemGuiMap.put("Cow Skin", new ItemStack(Material.LEATHER_CHESTPLATE));
+        itemGuiMap.put("Iron Man", new ItemStack(Material.IRON_CHESTPLATE));
+        itemGuiMap.put("Wifey", new ItemStack(Material.DIAMOND_CHESTPLATE));
+        itemGuiMap.put("Boomstick", new ItemStack(Material.STICK));
+        itemGuiMap.put("Stoner", new ItemStack(Material.STONE_SWORD));
+        itemGuiMap.put("Knife", new ItemStack(Material.IRON_SWORD));
+        itemGuiMap.put("Excalibur", new ItemStack(Material.DIAMOND_SWORD));
+        itemGuiMap.put("Beheader", new ItemStack(Material.DIAMOND_AXE));
+
+        itemGuiMap.put("Bowner", plugin.getCustomItemManager().getCustomItemStack(CustomItemType.SCOUT));
+        itemGuiMap.put("AVP", plugin.getCustomItemManager().getCustomItemStack(CustomItemType.AVP));
+        itemGuiMap.put("Frag", new ItemStack(Material.FIRE_CHARGE));
+        itemGuiMap.put("Flash", new ItemStack(Material.SPLASH_POTION));
+        itemGuiMap.put("Power I", new ItemStack(Material.ENCHANTED_BOOK));
+        itemGuiMap.put("Knockback II", new ItemStack(Material.ENCHANTED_BOOK));
+        itemGuiMap.put("Infinity", new ItemStack(Material.ENCHANTED_BOOK));
+        itemGuiMap.put("Fire Aspect II", new ItemStack(Material.ENCHANTED_BOOK));
     }
 
     public void InitializeBuyItems() {
@@ -87,7 +117,7 @@ public class BuyMenu implements Listener {
         ItemStack clickedItem = event.getCurrentItem();
         Player player = (Player) event.getWhoClicked();
         assert clickedItem != null;
-        if (clickedItem.getType().equals(Material.STONE)){
+        if (clickedItem.getType().equals(Material.EMERALD)){
             openInventory(player);
             inventory.clear();
             InitializeBuyItems();
@@ -138,40 +168,20 @@ public class BuyMenu implements Listener {
     public void retrieveItems(InventoryClickEvent event){
         ItemStack clickedItem = event.getCurrentItem();
         Player player = (Player) event.getWhoClicked();
-        assert clickedItem != null;
-        if (clickedItem.getItemMeta().getDisplayName().equals("Cow Skin")){
-            player.getInventory().addItem(new ItemStack(Material.LEATHER_CHESTPLATE));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("Iron Man")){
-            player.getInventory().addItem(new ItemStack(Material.IRON_CHESTPLATE));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("Wifey")){
-            player.getInventory().addItem(new ItemStack(Material.DIAMOND_CHESTPLATE));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("Boomstick")){
-            player.getInventory().addItem(new ItemStack(Material.STICK));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("Stoner")){
-            player.getInventory().addItem(new ItemStack(Material.STONE_SWORD));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("Knife")){
-            player.getInventory().addItem(new ItemStack(Material.IRON_SWORD));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("Excalibur")){
-            player.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("Beheader")){
-            player.getInventory().addItem(new ItemStack(Material.DIAMOND_AXE));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("Bowner")){
-            player.getInventory().addItem(new ItemStack(Material.BOW));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("AVP")){
-            player.getInventory().addItem(new ItemStack(Material.CROSSBOW));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("Frag")){
-            player.getInventory().addItem(new ItemStack(Material.FIRE_CHARGE));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("Flash")){
-            player.getInventory().addItem(new ItemStack(Material.SPLASH_POTION));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("Power I")){
-            player.getInventory().addItem(new ItemStack(Material.ENCHANTED_BOOK));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("Knockback II")){
-            player.getInventory().addItem(new ItemStack(Material.ENCHANTED_BOOK));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("Infinity")){
-            player.getInventory().addItem(new ItemStack(Material.ENCHANTED_BOOK));
-        }else if(clickedItem.getItemMeta().getDisplayName().equals("Fire Aspect II")){
-            player.getInventory().addItem(new ItemStack(Material.ENCHANTED_BOOK));
+
+
+        if(clickedItem == null){
+            return;
         }
+
+        String itemName = clickedItem.getItemMeta().getDisplayName();
+
+        if (itemGuiMap.containsKey(itemName)) {
+            ItemStack mappedItem = itemGuiMap.get(itemName);
+            player.getInventory().addItem(mappedItem);
+        }
+
+
 
 
 
