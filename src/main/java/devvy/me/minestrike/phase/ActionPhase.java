@@ -31,6 +31,11 @@ public class ActionPhase extends PhaseBase {
         timer.startTimer();
 
         plugin.getGameManager().getBombs().forEach(BombSite::show);
+
+        for (CSPlayer csp : plugin.getGameManager().getAllPlayers()) {
+            csp.getSpigotPlayer().setInvulnerable(false);
+            csp.getSpigotPlayer().setInvisible(false);
+        }
     }
 
     @Override
@@ -40,6 +45,10 @@ public class ActionPhase extends PhaseBase {
             player.sendMessage(ChatColor.RED + "Ending Action Phase...");
 
         timer.endTimer();
+
+        for (CSPlayer csp : plugin.getGameManager().getAllPlayers())
+            csp.getSpigotPlayer().setInvulnerable(true);
+
     }
 
     public ExperienceTimer getTimer() {

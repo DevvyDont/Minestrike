@@ -30,10 +30,11 @@ public class PhaseManager {
             endPhaseLoop();
         }
 
-        // Clear inventories of the people that are playing
-        for (CSPlayer p : plugin.getGameManager().getAllPlayers())
+        // Clear inventories of the people that are playing, makes them invincible
+        for (CSPlayer p : plugin.getGameManager().getAllPlayers()) {
             p.getSpigotPlayer().getInventory().clear();
-
+            p.getSpigotPlayer().setInvulnerable(true);
+        }
 
         currentPhase = new BuyPhase();
         currentPhase.start();
