@@ -5,6 +5,7 @@ import devvy.me.minestrike.game.CSTeam;
 import devvy.me.minestrike.player.CSPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameRule;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -35,6 +36,9 @@ public class PhaseManager {
             p.getSpigotPlayer().getInventory().clear();
             p.getSpigotPlayer().setInvulnerable(true);
         }
+
+        // turn off natural regen
+        Bukkit.getWorld("world").setGameRule(GameRule.NATURAL_REGENERATION, false);
 
         currentPhase = new BuyPhase();
         currentPhase.start();
