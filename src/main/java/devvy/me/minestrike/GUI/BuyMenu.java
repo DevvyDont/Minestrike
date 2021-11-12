@@ -116,7 +116,11 @@ public class BuyMenu implements Listener {
     public void openGUI(InventoryClickEvent event){
         ItemStack clickedItem = event.getCurrentItem();
         Player player = (Player) event.getWhoClicked();
-        assert clickedItem != null;
+
+        // if they didnt click an item we dont care
+        if (clickedItem == null)
+            return;
+
         if (clickedItem.getType().equals(Material.EMERALD)){
             openInventory(player);
             inventory.clear();
@@ -128,7 +132,11 @@ public class BuyMenu implements Listener {
     public void openSecondGUI(InventoryClickEvent event){
         ItemStack clickedItem = event.getCurrentItem();
         Player player = (Player) event.getWhoClicked();
-        assert clickedItem != null;
+
+        // if they didnt click an item we dont care
+        if (clickedItem == null)
+            return;
+
         if (clickedItem.getType().equals(Material.LEATHER_CHESTPLATE)){
             InitializeArmorItems();
             openInventory(player);
