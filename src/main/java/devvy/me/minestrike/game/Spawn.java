@@ -2,56 +2,60 @@ package devvy.me.minestrike.game;
 
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.player.CSPlayer;
+import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Spawn implements Listener {
 
-    private ArrayList<Location> ctSpawnPoints = new ArrayList<>();
     private CSTeam team;
-    private int modifier = 1;
+    private Location origin;
 
     public Spawn(Location origin, CSTeam team){
+        this.origin = origin;
         this.team = team;
-        int originX = origin.getBlockX();
-        int originY = origin.getBlockY();
-        int originZ = origin.getBlockZ();
-        Location ctSpawn = new Location(origin.getWorld(), originX, originY, originZ);
-        Location ctSpawn2 = new Location(origin.getWorld(), originX - 1 , originY, originZ - 2 * modifier);
-        Location ctSpawn3 = new Location(origin.getWorld(), originX - 3 , originY, originZ  - 2 * modifier);
-        Location ctSpawn4 = new Location(origin.getWorld(), originX - 4 , originY, originZ - 2 * modifier);
-        Location ctSpawn5 = new Location(origin.getWorld(), originX - 5 , originY, originZ);
-
-        ctSpawnPoints.add(ctSpawn);
-        ctSpawnPoints.add(ctSpawn2);
-        ctSpawnPoints.add(ctSpawn3);
-        ctSpawnPoints.add(ctSpawn4);
-        ctSpawnPoints.add(ctSpawn5);
 
 
-    }
-    public void setModifier(int modifier){
-        int h = modifier == 1 ? 0: 180;
-        for(Location spawn : ctSpawnPoints){
-            spawn.setYaw(h);
-        }
-        this.modifier = modifier;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Location random = randomSpawnLocation();
+                Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(0, 127, 255), 1);
+                origin.getWorld().spawnParticle(Particle.REDSTONE, random, 50, dustOptions);
+            }
+        }.runTaskTimer(Minestrike.getPlugin(Minestrike.class), 0, 1);
     }
 
+    public Location randomSpawnLocation() {
+        return randomSpawnLocation(Math.random());
+    }
+
+    public Location randomSpawnLocation(double t) {
+        Location loc = origin.clone();
+        double newX = 3 * Math.sin(t*4*Math.PI-(2*Math.PI)) + loc.getX();
+        double newZ = 3 * Math.cos(t*2*Math.PI*-1) + loc.getZ();
+        loc.set(newX, loc.getY(), newZ);
+        return loc;
+    }
 
     public void teleportMembersToSpawnPoints(){
         ArrayList<CSPlayer> players = new ArrayList<>(team.getMembers());
         Collections.shuffle(players);
 
 
-
-        int i = 0;
+        double t = 0;
+        double progress = 0;
+        double playersProcessed = 0;
 
         for(CSPlayer member : players){
-            member.getSpigotPlayer().teleport(ctSpawnPoints.get(i));
-
+            member.getSpigotPlayer().teleport(randomSpawnLocation(progress));
+            playersProcessed++;
+            progress = playersProcessed / team.getMembers().size();
         }
 
     }

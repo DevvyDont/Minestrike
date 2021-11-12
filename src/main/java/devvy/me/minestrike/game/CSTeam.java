@@ -20,8 +20,8 @@ public class CSTeam {
     private int lossStreak;
     private Spawn spawn;
     //DEBUG
-    private Vector defendersSpawnCoordinates = new Vector(3,64,-23);
-    private Vector attackersSpawnCoordinates = new Vector(3,64,23);
+    private Vector defendersSpawnCoordinates = new Vector(0,64,-24);
+    private Vector attackersSpawnCoordinates = new Vector(0,64,24);
 
     public CSTeam(TeamType type, String name) {
         Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
@@ -34,13 +34,12 @@ public class CSTeam {
 
 
 
-        //DEBUG
-        if (type == TeamType.ATTACKERS){
-            this.spawn = new Spawn(new Location(plugin.getGameWorld(), attackersSpawnCoordinates.getX(),attackersSpawnCoordinates.getY(), attackersSpawnCoordinates.getZ()), this);
-            this.spawn.setModifier(-1);
-        }else{
-            this.spawn = new Spawn(new Location(plugin.getGameWorld(), defendersSpawnCoordinates.getX(),defendersSpawnCoordinates.getY(), defendersSpawnCoordinates.getZ()), this);
-        }
+        // todo make this not hard coded ish
+        if (type == TeamType.ATTACKERS)
+            this.spawn = new Spawn(new Location(plugin.getGameWorld(), attackersSpawnCoordinates.getX()+.5,attackersSpawnCoordinates.getY(), attackersSpawnCoordinates.getZ()+.5), this);
+        else
+            this.spawn = new Spawn(new Location(plugin.getGameWorld(), defendersSpawnCoordinates.getX()+.5,defendersSpawnCoordinates.getY(), defendersSpawnCoordinates.getZ()+.5), this);
+
 
     }
 
