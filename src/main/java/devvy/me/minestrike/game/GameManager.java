@@ -1,6 +1,7 @@
 package devvy.me.minestrike.game;
 
 
+import devvy.me.minestrike.GUI.BuyManager;
 import devvy.me.minestrike.GUI.BuyMenu;
 import devvy.me.minestrike.items.GlobalDamageManager;
 import devvy.me.minestrike.scoreboard.Sidebar;
@@ -28,8 +29,8 @@ public class GameManager implements Listener {
     private final TeamManager teamManager;
     private final PlayerManager playerManager;
     private final GlobalDamageManager globalDamageManager;
-    private final BuyMenu buyMenu;
     private Sidebar scoreboardManager;
+    private BuyManager buyManager;
 
     private GameState state;
 
@@ -49,8 +50,8 @@ public class GameManager implements Listener {
         teamManager = new TeamManager();
         playerManager = new PlayerManager(plugin);
         globalDamageManager = new GlobalDamageManager();
+        buyManager = new BuyManager();
         state = GameState.WAITING;
-        buyMenu = new BuyMenu();
 
         // set up bombs
         bombs = new ArrayList<>();
@@ -65,7 +66,7 @@ public class GameManager implements Listener {
         plugin.getServer().getPluginManager().registerEvents(teamManager, plugin);
         plugin.getServer().getPluginManager().registerEvents(playerManager, plugin);
         plugin.getServer().getPluginManager().registerEvents(globalDamageManager, plugin);
-        plugin.getServer().getPluginManager().registerEvents(buyMenu, plugin);
+        plugin.getServer().getPluginManager().registerEvents(buyManager, plugin);
 
         for (Player p : Bukkit.getOnlinePlayers())
             handleNewPlayer(p);

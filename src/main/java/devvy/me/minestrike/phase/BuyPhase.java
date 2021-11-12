@@ -1,5 +1,6 @@
 package devvy.me.minestrike.phase;
 
+import devvy.me.minestrike.GUI.BuyMenu;
 import devvy.me.minestrike.game.BombSite;
 import devvy.me.minestrike.game.GameState;
 import devvy.me.minestrike.items.CustomItemType;
@@ -10,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 
 public class BuyPhase extends PhaseBase {
 
@@ -53,6 +55,11 @@ public class BuyPhase extends PhaseBase {
             player.sendMessage(ChatColor.RED + "Ending Buy Phase...");
 
         timer.endTimer();
+
+        for (CSPlayer csp : plugin.getGameManager().getAllPlayers())
+            csp.getSpigotPlayer().closeInventory();
+
+        HandlerList.unregisterAll(new BuyMenu());
 
     }
 

@@ -22,38 +22,42 @@ public class BuyMenu implements Listener {
     private final Inventory inventory;
     Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
 
-    private HashMap<String, ItemStack> itemGuiMap = new HashMap();
+    private static HashMap<String, ItemStack> itemGuiMap = null;
 
 
     public BuyMenu() {
         inventory = Bukkit.createInventory(null, 9, "Buy Menu");
-        InitializeBuyItems();
-        System.out.println("buy gui");
 
-        initItemMap();
+        if (itemGuiMap == null)
+            initItemMap();
 
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     public void initItemMap() {
-        itemGuiMap.put("Cow Skin", new ItemStack(Material.LEATHER_CHESTPLATE));
-        itemGuiMap.put("Iron Man", new ItemStack(Material.IRON_CHESTPLATE));
-        itemGuiMap.put("Wifey", new ItemStack(Material.DIAMOND_CHESTPLATE));
-        itemGuiMap.put("Boomstick", new ItemStack(Material.STICK));
-        itemGuiMap.put("Stoner", new ItemStack(Material.STONE_SWORD));
-        itemGuiMap.put("Knife", new ItemStack(Material.IRON_SWORD));
-        itemGuiMap.put("Excalibur", new ItemStack(Material.DIAMOND_SWORD));
-        itemGuiMap.put("Beheader", new ItemStack(Material.DIAMOND_AXE));
+        itemGuiMap = new HashMap()
+        {{
+            put("Cow Skin", new ItemStack(Material.LEATHER_CHESTPLATE));
+            put("Iron Man", new ItemStack(Material.IRON_CHESTPLATE));
+            put("Wifey", new ItemStack(Material.DIAMOND_CHESTPLATE));
+            put("Boomstick", new ItemStack(Material.STICK));
+            put("Stoner", new ItemStack(Material.STONE_SWORD));
+            put("Knife", new ItemStack(Material.IRON_SWORD));
+            put("Excalibur", new ItemStack(Material.DIAMOND_SWORD));
+            put("Beheader", new ItemStack(Material.DIAMOND_AXE));
 
-        itemGuiMap.put("Bowner", plugin.getCustomItemManager().getCustomItemStack(CustomItemType.SCOUT));
-        itemGuiMap.put("AVP", plugin.getCustomItemManager().getCustomItemStack(CustomItemType.AVP));
-        itemGuiMap.put("Frag", new ItemStack(Material.FIRE_CHARGE));
-        itemGuiMap.put("Flash", new ItemStack(Material.SPLASH_POTION));
-        itemGuiMap.put("Power I", new ItemStack(Material.ENCHANTED_BOOK));
-        itemGuiMap.put("Knockback II", new ItemStack(Material.ENCHANTED_BOOK));
-        itemGuiMap.put("Infinity", new ItemStack(Material.ENCHANTED_BOOK));
-        itemGuiMap.put("Fire Aspect II", new ItemStack(Material.ENCHANTED_BOOK));
+            put("Bowner", plugin.getCustomItemManager().getCustomItemStack(CustomItemType.SCOUT));
+            put("AVP", plugin.getCustomItemManager().getCustomItemStack(CustomItemType.AVP));
+            put("Frag", new ItemStack(Material.FIRE_CHARGE));
+            put("Flash", new ItemStack(Material.SPLASH_POTION));
+            put("Power I", new ItemStack(Material.ENCHANTED_BOOK));
+            put("Knockback II", new ItemStack(Material.ENCHANTED_BOOK));
+            put("Infinity", new ItemStack(Material.ENCHANTED_BOOK));
+            put("Fire Aspect II", new ItemStack(Material.ENCHANTED_BOOK));
+        }};
     }
 
+    // Called when a player opens the initial gui
     public void InitializeBuyItems() {
 
         inventory.addItem(CreateGUIItem(Material.LEATHER_CHESTPLATE, "Armor", "Armor Sets"));
@@ -61,16 +65,18 @@ public class BuyMenu implements Listener {
         inventory.addItem(CreateGUIItem(Material.BOW, "Range", "Rifles"));
         inventory.addItem(CreateGUIItem(Material.FIRE_CHARGE, "Equipment", "Utility"));
         inventory.addItem(CreateGUIItem(Material.EXPERIENCE_BOTTLE, "Enchantment", "Upgrades"));
-        System.out.println("initialized");
 
     }
 
+    // Called when a player opens the armor gui
     public void InitializeArmorItems(){
         inventory.clear();
         inventory.addItem(CreateGUIItem(Material.LEATHER_CHESTPLATE, "Cow Skin", "Leather Armor"));
         inventory.addItem(CreateGUIItem(Material.IRON_CHESTPLATE, "Iron Man", "Iron Armor"));
         inventory.addItem(CreateGUIItem(Material.DIAMOND_CHESTPLATE, "Wifey", "Diamond Armor"));
     }
+
+    // Called when a player opens the melee gui
     public void InitializeCCItems(){
         inventory.clear();
         inventory.addItem(CreateGUIItem(Material.STICK, "Boomstick", "Watch your fall"));
@@ -79,6 +85,8 @@ public class BuyMenu implements Listener {
         inventory.addItem(CreateGUIItem(Material.DIAMOND_SWORD, "Excalibur", "Diamond Sword"));
         inventory.addItem(CreateGUIItem(Material.DIAMOND_AXE, "Beheader", "Diamond Axe"));
     }
+
+    // Called when a player opens the ranged gui
     public void InitializeRangeItems(){
         inventory.clear();
         inventory.addItem(CreateGUIItem(Material.BOW, "Bowner", "Shoot"));
@@ -86,12 +94,15 @@ public class BuyMenu implements Listener {
 
     }
 
+    // Called when a player opens the equipment gui
     public void InitializeEquipmentItems(){
         inventory.clear();
         inventory.addItem(CreateGUIItem(Material.FIRE_CHARGE, "Frag", "Explosive"));
         inventory.addItem(CreateGUIItem(Material.POTION, "Flash", "Flashbang"));
 
     }
+
+    // Called when a player opens the enchant gui
     public void InitializeEnchantmentItems(){
         inventory.clear();
         inventory.addItem(CreateGUIItem(Material.ENCHANTED_BOOK, "Power I", "Power"));
@@ -99,6 +110,7 @@ public class BuyMenu implements Listener {
         inventory.addItem(CreateGUIItem(Material.ENCHANTED_BOOK, "Infinity", "Keep Shooting"));
         inventory.addItem(CreateGUIItem(Material.ENCHANTED_BOOK, "Fire Aspect II", "Hell's Redeemer"));
     }
+
     public ItemStack CreateGUIItem(Material material, String Title, String...lore){
         ItemStack itemStack = new ItemStack(material, 1);
         ItemMeta meta = itemStack.getItemMeta();
@@ -113,23 +125,11 @@ public class BuyMenu implements Listener {
     }
 
     @EventHandler
-    public void openGUI(InventoryClickEvent event){
-        ItemStack clickedItem = event.getCurrentItem();
-        Player player = (Player) event.getWhoClicked();
-
-        // if they didnt click an item we dont care
-        if (clickedItem == null)
-            return;
-
-        if (clickedItem.getType().equals(Material.EMERALD)){
-            openInventory(player);
-            inventory.clear();
-            InitializeBuyItems();
-        }
-    }
-
-    @EventHandler
     public void openSecondGUI(InventoryClickEvent event){
+
+        if (event.getClickedInventory() != inventory)
+            return;
+
         ItemStack clickedItem = event.getCurrentItem();
         Player player = (Player) event.getWhoClicked();
 
@@ -137,26 +137,17 @@ public class BuyMenu implements Listener {
         if (clickedItem == null)
             return;
 
-        if (clickedItem.getType().equals(Material.LEATHER_CHESTPLATE)){
+        if (clickedItem.getType().equals(Material.LEATHER_CHESTPLATE))
             InitializeArmorItems();
-            openInventory(player);
-
-        }else if(clickedItem.getType().equals(Material.STONE_SWORD)){
+        else if(clickedItem.getType().equals(Material.STONE_SWORD))
             InitializeCCItems();
-            openInventory(player);
-
-        }else if(clickedItem.getType().equals(Material.BOW)){
+        else if(clickedItem.getType().equals(Material.BOW))
             InitializeRangeItems();
-            openInventory(player);
-
-        }else if(clickedItem.getType().equals(Material.FIRE_CHARGE)){
+        else if(clickedItem.getType().equals(Material.FIRE_CHARGE))
             InitializeEquipmentItems();
-            openInventory(player);
-
-        }else if(clickedItem.getType().equals(Material.EXPERIENCE_BOTTLE)){
+        else if(clickedItem.getType().equals(Material.EXPERIENCE_BOTTLE))
             InitializeEnchantmentItems();
-            openInventory(player);
-        }
+
     }
 
     @EventHandler
@@ -165,22 +156,24 @@ public class BuyMenu implements Listener {
             event.setCancelled(true);
         }
     }
-    @EventHandler
-    public void inventoryDrag(InventoryDragEvent event){
-        if (event.getInventory() == inventory){
-            event.setCancelled(true);
-        }
-    }
+//    @EventHandler
+//    public void inventoryDrag(InventoryDragEvent event){
+//        if (event.getInventory() == inventory){
+//            event.setCancelled(true);
+//        }
+//    }
 
     @EventHandler
     public void retrieveItems(InventoryClickEvent event){
+
+        if (event.getClickedInventory() != inventory)
+            return;
+
         ItemStack clickedItem = event.getCurrentItem();
         Player player = (Player) event.getWhoClicked();
 
-
-        if(clickedItem == null){
+        if(clickedItem == null)
             return;
-        }
 
         String itemName = clickedItem.getItemMeta().getDisplayName();
 
@@ -188,9 +181,6 @@ public class BuyMenu implements Listener {
             ItemStack mappedItem = itemGuiMap.get(itemName);
             player.getInventory().addItem(mappedItem);
         }
-
-
-
 
 
     }
