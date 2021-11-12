@@ -152,16 +152,11 @@ public class BuyMenu implements Listener {
 
     @EventHandler
     public void inventoryClicked(InventoryClickEvent event){
-        if (event.getInventory() == inventory){
+
+        if (event.getInventory() == inventory)
             event.setCancelled(true);
-        }
+
     }
-//    @EventHandler
-//    public void inventoryDrag(InventoryDragEvent event){
-//        if (event.getInventory() == inventory){
-//            event.setCancelled(true);
-//        }
-//    }
 
     @EventHandler
     public void retrieveItems(InventoryClickEvent event){
