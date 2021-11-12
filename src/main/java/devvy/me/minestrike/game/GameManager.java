@@ -8,7 +8,9 @@ import devvy.me.minestrike.player.CSPlayer;
 import devvy.me.minestrike.player.PlayerManager;
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.phase.PhaseManager;
+import devvy.me.minestrike.tasks.SaturationTask;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,7 +48,7 @@ public class GameManager implements Listener {
         state = GameState.WAITING;
         buyMenu = new BuyMenu();
 
-
+        // set up bombs
         bombs = new ArrayList<>();
         // Construct the bomb objects
         bombs.add(new BombSite(new Location(plugin.getGameWorld(), 26, 64, -18)));
@@ -54,11 +56,15 @@ public class GameManager implements Listener {
         // Generate them into default state
         bombs.forEach(BombSite::generate);
 
+        // register events
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         plugin.getServer().getPluginManager().registerEvents(teamManager, plugin);
         plugin.getServer().getPluginManager().registerEvents(playerManager, plugin);
         plugin.getServer().getPluginManager().registerEvents(globalDamageManager, plugin);
         plugin.getServer().getPluginManager().registerEvents(buyMenu, plugin);
+
+        for (Player p : Bukkit.getOnlinePlayers())
+            handleNewPlayer(p);
     }
 
     public void initializeTabList(){
@@ -91,6 +97,10 @@ public class GameManager implements Listener {
 
     public GameState getState() {
         return state;
+    }
+
+    public Sidebar getScoreboardManager() {
+        return scoreboardManager;
     }
 
     public void setState(GameState state) {
@@ -129,6 +139,36 @@ public class GameManager implements Listener {
         bombs.forEach(BombSite::destroy);
     }
 
+    public List<CSPlayer> getAllPlayers() {
+        List<CSPlayer> ret = new ArrayList<>();
+        ret.addAll(getTeamManager().getAttackers().getMembers());
+        ret.addAll(getTeamManager().getDefenders().getMembers());
+        return ret;
+    }
+
+    public void broadcast(String message) {
+        for (Player player : Bukkit.getOnlinePlayers())
+            player.sendMessage(message);
+    }
+
+    public void handleNewPlayer(Player player) {
+        // Handle what we should do for their team
+        CSPlayer csPlayer = getPlayerManager().getCSPlayer(player);
+        CSTeam team = teamManager.getPlayerTeam(csPlayer);
+        if (team.getType() == TeamType.SPECTATORS) {
+
+            team.removeMember(csPlayer);  // Remove them as a spectator
+
+            if (teamManager.getDefenders().size() < teamManager.getAttackers().size()) {
+                teamManager.getDefenders().addMember(csPlayer);
+                System.out.println("ct" + teamManager.getDefenders());
+            } else {
+                teamManager.getAttackers().addMember(csPlayer);
+                System.out.println("t " + teamManager.getAttackers());
+            }
+        }
+    }
+
 
     /**************************************************************************************
     EVENTS TO HANDLE
@@ -136,24 +176,7 @@ public class GameManager implements Listener {
 
     @EventHandler
     public void handlePlayerJoined(PlayerJoinEvent event){
-
-
-        // Handle what we should do for their team
-        CSPlayer player = getPlayerManager().getCSPlayer(event.getPlayer());
-        CSTeam team = teamManager.getPlayerTeam(player);
-        if (team.getType() == TeamType.SPECTATORS) {
-
-            team.removeMember(player);  // Remove them as a spectator
-
-            if (teamManager.getDefenders().size() < teamManager.getAttackers().size()) {
-                teamManager.getDefenders().addMember(player);
-                System.out.println("ct" + teamManager.getDefenders());
-            } else {
-                teamManager.getAttackers().addMember(player);
-                System.out.println("t " + teamManager.getAttackers());
-            }
-        }
-
+        handleNewPlayer(event.getPlayer());
     }
 
     @EventHandler

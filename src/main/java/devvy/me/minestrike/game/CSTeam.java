@@ -2,6 +2,7 @@ package devvy.me.minestrike.game;
 
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.player.CSPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
@@ -90,14 +91,33 @@ public class CSTeam {
     public void addMember(CSPlayer player){
         if (!members.contains(player))
             members.add(player);
+
+        // update tab list to show clan tags properly
+        updateTablist(player.getSpigotPlayer());
     }
 
     public void removeMember(CSPlayer player){
         members.remove(player);
+
+        // update tab list to show clan tags properly
+        updateTablist(player.getSpigotPlayer());
     }
 
     public void clearMembers(){
         members = new ArrayList<>();
+        updateTablist();
+    }
+
+    public void updateTablist(Player p) {
+            if (Minestrike.getPlugin(Minestrike.class).getGameManager() != null)
+        Minestrike.getPlugin(Minestrike.class).getGameManager().getScoreboardManager().updatePlayerClanTag(p);
+    }
+
+    public void updateTablist() {
+        if (Minestrike.getPlugin(Minestrike.class).getGameManager() != null)
+            for (Player p : Bukkit.getOnlinePlayers())
+                // update tab list to show clan tags properly
+                Minestrike.getPlugin(Minestrike.class).getGameManager().getScoreboardManager().updatePlayerClanTag(p);
     }
 
     public Collection<CSPlayer> getMembers(){
