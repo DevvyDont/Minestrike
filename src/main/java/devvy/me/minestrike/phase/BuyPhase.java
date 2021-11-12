@@ -9,9 +9,11 @@ import devvy.me.minestrike.timers.ExperienceTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.ItemStack;
 
 public class BuyPhase extends PhaseBase {
 
@@ -34,6 +36,12 @@ public class BuyPhase extends PhaseBase {
             p.getSpigotPlayer().setGameMode(GameMode.ADVENTURE);
             p.getSpigotPlayer().setHealth(p.getSpigotPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             p.getSpigotPlayer().getInventory().remove(plugin.getCustomItemManager().getCustomItemStack(CustomItemType.BOMB));
+
+            // Give them the emerald
+            if (p.getSpigotPlayer().getInventory().getItem(8) == null)
+                p.getSpigotPlayer().getInventory().setItem(8, new ItemStack(Material.EMERALD));
+            else
+                p.getSpigotPlayer().getInventory().addItem(new ItemStack(Material.EMERALD));
         }
 
         timer = new ExperienceTimer(plugin, type().DEFAULT_TICK_LENGTH);
@@ -56,8 +64,10 @@ public class BuyPhase extends PhaseBase {
 
         timer.endTimer();
 
-        for (CSPlayer csp : plugin.getGameManager().getAllPlayers())
+        for (CSPlayer csp : plugin.getGameManager().getAllPlayers()) {
+            csp.getSpigotPlayer().getInventory().remove(Material.EMERALD);
             csp.getSpigotPlayer().closeInventory();
+        }
 
         HandlerList.unregisterAll(new BuyMenu());
 
