@@ -1,4 +1,4 @@
-package devvy.me.minestrike.timers;
+package devvy.me.minestrike.tasks;
 
 import devvy.me.minestrike.Minestrike;
 import org.bukkit.Bukkit;

@@ -1,9 +1,8 @@
-package devvy.me.minestrike.game;
+package devvy.me.minestrike.team;
 
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.player.CSPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.bukkit.entity.Player;
@@ -144,8 +143,12 @@ public class CSTeam {
     }
 
     public void addMoneyToAllMembers(int amount) {
+        addMoneyToAllMembers(amount, "");
+    }
+
+    public void addMoneyToAllMembers(int amount, String reason) {
         for (CSPlayer member : members)
-            member.addMoney(amount);
+            member.addMoney(amount, reason);
     }
 
     public int size(){

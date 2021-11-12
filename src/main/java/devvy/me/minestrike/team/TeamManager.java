@@ -1,4 +1,4 @@
-package devvy.me.minestrike.game;
+package devvy.me.minestrike.team;
 
 import devvy.me.minestrike.player.CSPlayer;
 import org.bukkit.event.Listener;

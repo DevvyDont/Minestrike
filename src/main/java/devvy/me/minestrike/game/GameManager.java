@@ -1,8 +1,7 @@
 package devvy.me.minestrike.game;
 
 
-import devvy.me.minestrike.GUI.BuyManager;
-import devvy.me.minestrike.GUI.BuyMenu;
+import devvy.me.minestrike.gui.BuyManager;
 import devvy.me.minestrike.items.GlobalDamageManager;
 import devvy.me.minestrike.scoreboard.Sidebar;
 import devvy.me.minestrike.player.CSPlayer;
@@ -10,8 +9,10 @@ import devvy.me.minestrike.player.PlayerManager;
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.phase.PhaseManager;
 import devvy.me.minestrike.tasks.SaturationTask;
+import devvy.me.minestrike.team.CSTeam;
+import devvy.me.minestrike.team.TeamManager;
+import devvy.me.minestrike.team.TeamType;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

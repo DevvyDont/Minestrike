@@ -1,7 +1,6 @@
-package devvy.me.minestrike.GUI;
+package devvy.me.minestrike.gui;
 
 import devvy.me.minestrike.Minestrike;
-import devvy.me.minestrike.items.CustomItemScout;
 import devvy.me.minestrike.items.CustomItemType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -9,12 +8,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.HashMap;
 

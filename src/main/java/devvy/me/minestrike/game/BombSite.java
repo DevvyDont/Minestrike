@@ -2,6 +2,7 @@ package devvy.me.minestrike.game;
 
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.player.CSPlayer;
+import devvy.me.minestrike.team.TeamType;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;

@@ -1,12 +1,11 @@
 package devvy.me.minestrike.phase;
 
 import devvy.me.minestrike.Minestrike;
-import devvy.me.minestrike.game.CSTeam;
+import devvy.me.minestrike.team.CSTeam;
 import devvy.me.minestrike.player.CSPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameRule;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -84,10 +83,8 @@ public class PhaseManager {
                     //team was eliminated or bomb went boom
                     case TEAM_WAS_ELIMINATED:
                     case BOMB_EXPLODED:
-
                         //gives loss money
-                        team.addMoneyToAllMembers(900 + 500 * team.getLossStreak());
-
+                        team.addMoneyToAllMembers(900 + 500 * team.getLossStreak(), ChatColor.RED + "ROUND LOST!");
                         break;
 
                 }
@@ -105,7 +102,7 @@ public class PhaseManager {
                         for (CSPlayer player : team.getMembers()){
 
                             if (!(player.isAlive()))
-                                player.addMoney(900 + 500 * team.getLossStreak());
+                                player.addMoney(900 + 500 * team.getLossStreak(), ChatColor.RED + "OUT OF TIME!");
 
                         }
 
@@ -117,7 +114,7 @@ public class PhaseManager {
                     case TEAM_WAS_ELIMINATED:
 
                         //gives loss money
-                        team.addMoneyToAllMembers(900 + 500 * team.getLossStreak());
+                        team.addMoneyToAllMembers(900 + 500 * team.getLossStreak(), ChatColor.RED + "YOUR TEAM WAS ELIMINATED!");
 
                         break;
 
@@ -126,7 +123,7 @@ public class PhaseManager {
                     case BOMB_IS_DEFUSED:
 
                         //gives loss money
-                        team.addMoneyToAllMembers(1700 + 500 * team.getLossStreak());
+                        team.addMoneyToAllMembers(1700 + 500 * team.getLossStreak(), ChatColor.RED + "BOMB DEFUSED!");
                 }
 
                 break;
@@ -153,10 +150,8 @@ public class PhaseManager {
                     //case where defending team won the round
                     //bomb was defused
                     case BOMB_IS_DEFUSED:
-
                         //gives loss money
-                        team.addMoneyToAllMembers(3500);
-
+                        team.addMoneyToAllMembers(3500, ChatColor.AQUA + "BOMB DEFUSED!");
                         break;
 
 
@@ -164,10 +159,8 @@ public class PhaseManager {
                     //Ts eliminated, or time ran out
                     case TIME_RAN_OUT:
                     case TEAM_WAS_ELIMINATED:
-
                         //gives loss money
-                        team.addMoneyToAllMembers(3250);
-
+                        team.addMoneyToAllMembers(3250, ChatColor.AQUA + "ROUND WON!");
                         break;
 
                 }
@@ -184,15 +177,13 @@ public class PhaseManager {
                     case TEAM_WAS_ELIMINATED:
 
                         //gives loss money
-                        team.addMoneyToAllMembers(3500);
+                        team.addMoneyToAllMembers(3500, ChatColor.AQUA + "ROUND WON!");
 
                     //case where defending team won
                     //bomb exploded
                     case BOMB_EXPLODED:
-
                         //gives loss money
-                        team.addMoneyToAllMembers(3250);
-
+                        team.addMoneyToAllMembers(3250, ChatColor.AQUA + "BOMB EXPLODED!");
                         break;
                 }
 

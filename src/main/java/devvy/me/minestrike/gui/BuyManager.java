@@ -1,4 +1,4 @@
-package devvy.me.minestrike.GUI;
+package devvy.me.minestrike.gui;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

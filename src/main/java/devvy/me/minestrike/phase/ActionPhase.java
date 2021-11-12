@@ -1,17 +1,20 @@
 package devvy.me.minestrike.phase;
 
 import devvy.me.minestrike.game.BombSite;
-import devvy.me.minestrike.game.CSTeam;
+import devvy.me.minestrike.team.CSTeam;
 import devvy.me.minestrike.game.GameState;
-import devvy.me.minestrike.game.TeamType;
+import devvy.me.minestrike.team.TeamType;
 import devvy.me.minestrike.player.CSPlayer;
-import devvy.me.minestrike.timers.ExperienceTimer;
+import devvy.me.minestrike.tasks.ExperienceTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 public class ActionPhase extends PhaseBase {
+
+    private final int SUICIDE_MONEY_BONUS = 300;
+    private final int TEAMKILL_MONEY_PENALTY = -300;
 
     private ExperienceTimer timer;
 
@@ -75,22 +78,17 @@ public class ActionPhase extends PhaseBase {
 
         //suicide. literally
         if (p == null){     //TODO: handle bomb explosion logic
-            moneyToGive = 300; //to a random player on the enemy team
             CSPlayer randomPlayer = oppositeTeam.getRandomMember();
-
             if (randomPlayer != null)
-                oppositeTeam.getRandomMember().addMoney(moneyToGive);
+                randomPlayer.addMoney(SUICIDE_MONEY_BONUS, ChatColor.AQUA + "ENEMY SUICIDE!");
 
         }else{
             CSPlayer killerCSPlayer = plugin.getGameManager().getPlayerManager().getCSPlayer(p);
             CSTeam killersTeam = plugin.getGameManager().getTeamManager().getPlayerTeam(killerCSPlayer);
 
             //teamkill penalty
-            if (killersTeam == victimsTeam) {
-                moneyToGive = -300;
-                killerCSPlayer.addMoney(moneyToGive);
-
-            }
+            if (killersTeam == victimsTeam)
+                killerCSPlayer.addMoney(TEAMKILL_MONEY_PENALTY, ChatColor.DARK_RED + "TEAMKILL PEANLTY!");
 
         }
 

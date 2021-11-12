@@ -1,7 +1,8 @@
-package devvy.me.minestrike.game;
+package devvy.me.minestrike.team;
 
 import devvy.me.minestrike.Minestrike;
 import devvy.me.minestrike.player.CSPlayer;
+import devvy.me.minestrike.team.CSTeam;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;

@@ -1,8 +1,8 @@
 package devvy.me.minestrike.scoreboard;
 
 import devvy.me.minestrike.Minestrike;
-import devvy.me.minestrike.game.CSTeam;
-import devvy.me.minestrike.game.TeamManager;
+import devvy.me.minestrike.team.CSTeam;
+import devvy.me.minestrike.team.TeamManager;
 import devvy.me.minestrike.phase.ActionPhase;
 import devvy.me.minestrike.phase.BuyPhase;
 import devvy.me.minestrike.phase.IntermissionPhase;

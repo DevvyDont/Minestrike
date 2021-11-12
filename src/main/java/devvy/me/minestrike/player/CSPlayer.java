@@ -1,6 +1,6 @@
 package devvy.me.minestrike.player;
 
-import devvy.me.minestrike.game.PlayerKDTracker;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -40,9 +40,15 @@ public class CSPlayer {
         return true;
     }
 
-    public void addMoney(int amount){
+    public void addMoney(int amount, String reason){
         money += amount;
-        spigotPlayer.sendMessage("you were just given $"+amount+" you now have $"+money);
+        spigotPlayer.sendMessage(reason + ChatColor.GREEN + "+$"+amount);
+        spigotPlayer.sendActionBar(ChatColor.GREEN + "$" + money + "");
+//        spigotPlayer.sendActionBar(reason + ChatColor.GREEN + " - $" + amount + ChatColor.DARK_GREEN + " ($" + money + ")");
+    }
+
+    public void addMoney(int amount) {
+        addMoney(amount, "");
     }
 
     public void resetStats(){

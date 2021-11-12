@@ -1,10 +1,9 @@
 package devvy.me.minestrike.commands;
 
 import devvy.me.minestrike.Minestrike;
-import devvy.me.minestrike.game.CSTeam;
+import devvy.me.minestrike.team.CSTeam;
 import devvy.me.minestrike.game.GameManager;
-import devvy.me.minestrike.game.TeamType;
-import devvy.me.minestrike.items.CustomItem;
+import devvy.me.minestrike.team.TeamType;
 import devvy.me.minestrike.items.CustomItemType;
 import devvy.me.minestrike.player.CSPlayer;
 import org.bukkit.ChatColor;
