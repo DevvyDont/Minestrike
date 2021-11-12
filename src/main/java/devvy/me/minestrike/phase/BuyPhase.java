@@ -11,16 +11,21 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class BuyPhase extends PhaseBase {
+public class BuyPhase extends PhaseBase implements Listener {
 
     private ExperienceTimer timer;
 
     public BuyPhase() {
         super();
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
@@ -70,6 +75,7 @@ public class BuyPhase extends PhaseBase {
         }
 
         HandlerList.unregisterAll(new BuyMenu());
+        HandlerList.unregisterAll(this);
 
     }
 
@@ -89,6 +95,24 @@ public class BuyPhase extends PhaseBase {
     }
     public ExperienceTimer getTimer() {
         return timer;
+    }
+
+    @EventHandler
+    public void onAttemptMove(PlayerMoveEvent event) {
+
+        if (event.getPlayer().getGameMode() == GameMode.CREATIVE || event.getPlayer().getGameMode() == GameMode.SPECTATOR)
+            return;
+
+        int oldBlockX = event.getFrom().getBlockX();
+        int oldBlockZ = event.getFrom().getBlockZ();
+        int newBlockX = event.getTo().getBlockX();
+        int newBlockZ = event.getTo().getBlockZ();
+
+        boolean moved = oldBlockX != newBlockX || oldBlockZ != newBlockZ;
+
+        if (moved)
+            event.setCancelled(true);
+
     }
 
 }
