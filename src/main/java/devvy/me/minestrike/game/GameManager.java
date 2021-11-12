@@ -41,6 +41,10 @@ public class GameManager implements Listener {
 
         Minestrike plugin = Minestrike.getPlugin(Minestrike.class);
 
+        // keep everyone saturated
+        new SaturationTask().runTaskTimer(plugin, 0, 10);
+
+        // instantiate all of our managers and set initial states
         phaseManager = new PhaseManager(plugin);
         teamManager = new TeamManager();
         playerManager = new PlayerManager(plugin);
