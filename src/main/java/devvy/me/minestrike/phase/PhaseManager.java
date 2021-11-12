@@ -5,6 +5,7 @@ import devvy.me.minestrike.game.CSTeam;
 import devvy.me.minestrike.player.CSPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -28,6 +29,11 @@ public class PhaseManager {
         if (nextPhaseTask != null){
             endPhaseLoop();
         }
+
+        // Clear inventories of the people that are playing
+        for (CSPlayer p : plugin.getGameManager().getAllPlayers())
+            p.getSpigotPlayer().getInventory().clear();
+
 
         currentPhase = new BuyPhase();
         currentPhase.start();

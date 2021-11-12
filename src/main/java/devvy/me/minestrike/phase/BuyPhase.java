@@ -8,6 +8,7 @@ import devvy.me.minestrike.timers.ExperienceTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 
 public class BuyPhase extends PhaseBase {
@@ -23,28 +24,25 @@ public class BuyPhase extends PhaseBase {
         plugin.getGameManager().getTeamManager().getAttackers().getSpawn().teleportMembersToSpawnPoints();
         plugin.getGameManager().getTeamManager().getDefenders().getSpawn().teleportMembersToSpawnPoints();
 
-
         plugin.getGameManager().setState(GameState.BUY_IN_PROGRESS);
+        plugin.getGameManager().broadcast(ChatColor.AQUA + "Starting Buy Phase...");
 
-        for (Player player : Bukkit.getOnlinePlayers())
-            player.sendMessage(ChatColor.AQUA + "Starting Buy Phase...");
-
-        for (CSPlayer p : plugin.getGameManager().getTeamManager().getAttackers().getMembers()) {
+        // A loop for what we should do for all players playing
+        for (CSPlayer p : plugin.getGameManager().getAllPlayers()) {
             p.getSpigotPlayer().setGameMode(GameMode.ADVENTURE);
-            // Remove any bombs from the t's
+            p.getSpigotPlayer().setHealth(p.getSpigotPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             p.getSpigotPlayer().getInventory().remove(plugin.getCustomItemManager().getCustomItemStack(CustomItemType.BOMB));
         }
-
-        for (CSPlayer p : plugin.getGameManager().getTeamManager().getDefenders().getMembers())
-            p.getSpigotPlayer().setGameMode(GameMode.ADVENTURE);
 
         timer = new ExperienceTimer(plugin, type().DEFAULT_TICK_LENGTH);
         timer.startTimer();
 
+        // Randomly give an attacker a bomb
         CSPlayer randomAttacker = plugin.getGameManager().getTeamManager().getAttackers().getRandomMember();
         if (randomAttacker != null)
             randomAttacker.getSpigotPlayer().getInventory().addItem(plugin.getCustomItemManager().getCustomItemStack(CustomItemType.BOMB));
 
+        // Reset all the bomb sites
         plugin.getGameManager().getBombs().forEach(BombSite::reset);
     }
 

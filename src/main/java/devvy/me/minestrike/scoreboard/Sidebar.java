@@ -74,12 +74,12 @@ public class Sidebar implements Listener {
         t = mainScoreboard.registerNewTeam("Terrorists");
         t.setPrefix(ChatColor.GOLD + "[T] " + ChatColor.RED);
         t.setAllowFriendlyFire(false);
-        t.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
+        t.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
 
         ct = mainScoreboard.registerNewTeam("Defenders");
         ct.setPrefix(ChatColor.BLUE + "[CT] " + ChatColor.LIGHT_PURPLE);
         ct.setAllowFriendlyFire(false);
-        ct.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
+        ct.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
 
         spec = mainScoreboard.registerNewTeam("Spectators");
         spec.setPrefix(ChatColor.GRAY + "[SPEC] " + ChatColor.WHITE);
