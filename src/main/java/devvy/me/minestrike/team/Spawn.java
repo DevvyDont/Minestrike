@@ -38,8 +38,8 @@ public class Spawn implements Listener {
 
     public Location randomSpawnLocation(double t) {
         Location loc = origin.clone();
-        double newX = 3 * Math.sin(t*4*Math.PI-(2*Math.PI)) + loc.getX();
-        double newZ = 3 * Math.cos(t*2*Math.PI*-1) + loc.getZ();
+        double newX = 3 * Math.cos(t*2*Math.PI) + loc.getX();
+        double newZ = 3 * Math.sin((t*2)*2*Math.PI) + loc.getZ();
         loc.set(newX, loc.getY(), newZ);
         return loc;
     }
